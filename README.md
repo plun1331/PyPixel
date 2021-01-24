@@ -7,6 +7,7 @@
 An asynchronous wrapper for the Hypixel API.
 
 
+
 # Installation
 
 **Python 3.6 or higher is required**
