@@ -16,7 +16,7 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/plun1331/PyPixel",
     author="plun1331",
-    author_email="plun1331@gmail.com",
+    author_email="Don't contact me :P",
     packages=["pypixel"],
     include_package_data=True,
     install_requires=["aiohttp", "nbt"],

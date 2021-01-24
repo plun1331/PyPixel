@@ -4,13 +4,7 @@
 [![PyPI version info](https://img.shields.io/pypi/v/pypixel-api.svg)](https://pypi.python.org/pypi/pypixel-api)
 [![PyPI supported Python versions](https://img.shields.io/pypi/pyversions/pypixel-api.svg)](https://pypi.python.org/pypi/pypixel-api)
 
-Discord Server Invite PyPI Version Info PyPI supported Python versions
-
 An asynchronous wrapper for the Hypixel API.
-
-
-
-
 
 # Installation
 

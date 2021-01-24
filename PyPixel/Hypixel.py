@@ -41,7 +41,7 @@ class Hypixel:
         Your Hypixel API key.
     
     base_url: Optional[:class:`str`]
-        The base URL for the Hypixel API.
+        The base URL for the Hypixel API. Defaults to 'https://api.hypixel.net/'.
 
     clear_cache_after: Optional[:class:`int`]
         How often the cache should clear in seconds.
