@@ -17,7 +17,7 @@ setup(
     url="https://github.com/plun1331/PyPixel",
     author="plun1331",
     author_email="Don't contact me :P",
-    packages=["pypixel"],
+    packages=["PyPixel"],
     include_package_data=True,
     install_requires=["aiohttp", "nbt"],
     python_requires='>=3.6',
