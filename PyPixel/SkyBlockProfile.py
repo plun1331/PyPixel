@@ -44,3 +44,12 @@ class SkyBlockProfile(object):
             self.bank_balance = profiledata['banking']['balance']
         with suppress(KeyError):
             self.bank_transactions = profiledata['banking']['transactions']
+
+    def __eq__(self, other):
+        if isinstance(other, SkyBlockProfile):
+            if other.id == self.id:
+                return True
+        return False
+
+    def __str__(self):
+        return self.name

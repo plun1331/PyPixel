@@ -32,16 +32,17 @@ from .SkyBlockStats import SkyBlockStats, SkyBlockObjective, SkyBlockQuest, SkyB
 
 class ProfileMember(object):
     r"""Represents a member in a SkyBlock profile."""
+
     def __init__(self, uuid, memberdata, hypixel):
         self._hypixel = hypixel
         with suppress(KeyError):
             self.uuid = uuid
         with suppress(KeyError):
-            self.last_save = datetime.datetime.fromtimestamp(memberdata['last_save']/1000)
+            self.last_save = datetime.datetime.fromtimestamp(memberdata['last_save'] / 1000)
         with suppress(KeyError):
             self.armour = Hypixel.parseNBT(memberdata['inv_armor']['data'])
         with suppress(KeyError):
-            self.first_join = datetime.datetime.fromtimestamp(memberdata['first_join']/1000)
+            self.first_join = datetime.datetime.fromtimestamp(memberdata['first_join'] / 1000)
         with suppress(KeyError):
             self.first_join_hub = datetime.datetime.fromtimestamp(memberdata['first_join_hub'] / 1000)
         with suppress(KeyError):
@@ -157,6 +158,14 @@ class ProfileMember(object):
             self.talismans = Hypixel.parseNBT(memberdata['talisman_bag']['data'])
         with suppress(KeyError):
             self.candy_inventory = Hypixel.parseNBT(memberdata['candy_inventory_contents']['data'])
+
+    def __eq__(self, other):
+        try:
+            if other.uuid == self.uuid:
+                return True
+        except AttributeError:
+            pass
+        return False
 
     async def get_player(self):
         r"""|coro|

@@ -114,6 +114,17 @@ class Player(object):
         with suppress(KeyError):
             self.cached = cached
 
+    def __eq__(self, other):
+        try:
+            if other.uuid == self.uuid:
+                return True
+        except AttributeError:
+            pass
+        return False
+
+    def __str__(self):
+        return self.name
+
     async def get_guild(self):
         r"""|coro|
         

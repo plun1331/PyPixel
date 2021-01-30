@@ -87,6 +87,9 @@ class Guild(object):
         with suppress(KeyError):
             self.guild_xp_by_game = guilddata['guildExpByGameType']
 
+    def __str__(self):
+        return self.name
+
     async def get_member(self, member: GuildMember):
         r"""|coro|
         

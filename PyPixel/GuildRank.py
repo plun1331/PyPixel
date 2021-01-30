@@ -47,3 +47,46 @@ class GuildRank(object):
             self.created = datetime.datetime.fromtimestamp(rankdata['created'] / 1000)
         with suppress(KeyError):
             self.priority = rankdata['priority']
+
+    def __eq__(self, other):
+        try:
+            if other.priority == self.priority:
+                return True
+        except AttributeError:
+            pass
+        return False
+
+    def __ge__(self, other):
+        try:
+            if self.priority >= other.priority:
+                return True
+        except AttributeError:
+            pass
+        return False
+
+    def __le__(self, other):
+        try:
+            if self.priority <= other.priority:
+                return True
+        except AttributeError:
+            pass
+        return False
+
+    def __gt__(self, other):
+        try:
+            if self.priority > other.priority:
+                return True
+        except AttributeError:
+            pass
+        return False
+
+    def __lt__(self, other):
+        try:
+            if self.priority < other.priority:
+                return True
+        except AttributeError:
+            pass
+        return False
+
+    def __str__(self):
+        return self.name
