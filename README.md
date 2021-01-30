@@ -103,6 +103,12 @@ GUILDMASTER
 ```
 
 # Changelog
+## 0.1.6
+- Add some methods
+
+## 0.1.5
+- Released to PyPI
+
 ## 0.1.4a
 - Added a changelog
 - Introduced SkyBlock Profiles
@@ -113,8 +119,6 @@ GUILDMASTER
 - Added some exception classes.
 - Started subclassing `object` for no paticular reason.
 
-## 0.1.5
-- Released to PyPI
 
-## 0.1.6
-- Add some methods
+
+
