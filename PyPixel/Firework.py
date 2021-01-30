@@ -24,6 +24,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
+
 class Firework:
     r"""Represents a firework. Interesting, right?
 
@@ -31,6 +32,7 @@ class Firework:
     --------
     :class:`dict`
         The raw firework data."""
+
     def __init__(self, firework):
         self.flight_duration = firework['flight_duaration']
         self.shape = firework['shape']

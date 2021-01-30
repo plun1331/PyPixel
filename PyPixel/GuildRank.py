@@ -27,6 +27,7 @@ SOFTWARE.
 import datetime
 from contextlib import suppress
 
+
 class GuildRank:
     r"""Represents a Hypixel guild rank.
     
@@ -34,6 +35,7 @@ class GuildRank:
     -----------
     rankdata: :class:`dict`
         A dict containing the rank's data."""
+
     def __init__(self, rankdata):
         with suppress(KeyError):
             self.name = rankdata['name']
@@ -42,6 +44,6 @@ class GuildRank:
         with suppress(KeyError):
             self.tag = rankdata['tag']
         with suppress(KeyError):
-            self.created = datetime.datetime.fromtimestamp(rankdata['created']/1000)
+            self.created = datetime.datetime.fromtimestamp(rankdata['created'] / 1000)
         with suppress(KeyError):
-            self.priority = rankdata['priority'] 
+            self.priority = rankdata['priority']

@@ -27,6 +27,7 @@ SOFTWARE.
 from threading import Thread
 import asyncio
 
+
 class Cache(Thread):
     r"""A class used for caching data returned from the api
 
@@ -36,6 +37,7 @@ class Cache(Thread):
     clear_cache_after: :class:`int`
         How often the cache should be cleared in seconds.
     """
+
     def __init__(self, clear_cache_after: int):
         super().__init__()
         self.cached = {}

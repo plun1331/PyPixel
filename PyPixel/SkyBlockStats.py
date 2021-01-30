@@ -25,8 +25,18 @@ SOFTWARE.
 """
 
 from contextlib import suppress
+import datetime
+from .utils import SkyBlock
 
-class SkyBlockStats:
+types = {'zombie': SkyBlock.zombieSlayer,
+         'spider': SkyBlock.spiderSlayer,
+         'wolf': SkyBlock.wolfSlayer}
+
+
+class SkyBlockStats(object):
+    r"""Represents a player's SkyBlock Statistics."""
+
+    # TODO: REFORMAT TO `self.stat = stats['stat_api_name'] if 'stat_api_name' in stats else None`
     def __init__(self, stats):
         with suppress(KeyError):
             self.top_crit_damage = stats['highest_crit_damage']
@@ -306,17 +316,23 @@ class SkyBlockStats:
             self.catfish_kills = int(stats['kills_catfish'])
         # I'm not making names for these what the hell
         with suppress(KeyError):
-            self.dungeon_hub_crystal_core_anything_no_return_best_time = stats['dungeon_hub_crystal_core_anything_no_return_best_time']
+            self.dungeon_hub_crystal_core_anything_no_return_best_time = stats[
+                'dungeon_hub_crystal_core_anything_no_return_best_time']
         with suppress(KeyError):
-            self.dungeon_hub_giant_mushroom_anything_no_return_best_time = stats['dungeon_hub_giant_mushroom_anything_no_return_best_time']
+            self.dungeon_hub_giant_mushroom_anything_no_return_best_time = stats[
+                'dungeon_hub_giant_mushroom_anything_no_return_best_time']
         with suppress(KeyError):
-            self.dungeon_hub_giant_mushroom_no_pearls_no_return_best_time = stats['dungeon_hub_giant_mushroom_no_pearls_no_return_best_time']
+            self.dungeon_hub_giant_mushroom_no_pearls_no_return_best_time = stats[
+                'dungeon_hub_giant_mushroom_no_pearls_no_return_best_time']
         with suppress(KeyError):
-            self.dungeon_hub_precursor_ruins_anything_no_return_best_time = stats['dungeon_hub_precursor_ruins_anything_no_return_best_time']
+            self.dungeon_hub_precursor_ruins_anything_no_return_best_time = stats[
+                'dungeon_hub_precursor_ruins_anything_no_return_best_time']
         with suppress(KeyError):
-            self.dungeon_hub_precursor_ruins_nothing_no_return_best_time = stats['dungeon_hub_precursor_ruins_nothing_no_return_best_time']
+            self.dungeon_hub_precursor_ruins_nothing_no_return_best_time = stats[
+                'dungeon_hub_precursor_ruins_nothing_no_return_best_time']
         with suppress(KeyError):
-            self.dungeon_hub_precursor_ruins_no_pearls_no_return_best_time = stats['dungeon_hub_precursor_ruins_no_pearls_no_return_best_time']
+            self.dungeon_hub_precursor_ruins_no_pearls_no_return_best_time = stats[
+                'dungeon_hub_precursor_ruins_no_pearls_no_return_best_time']
         # Anyways
         with suppress(KeyError):
             self.crypt_lurker_kills = int(stats['kills_crypt_lurker'])
@@ -459,8 +475,6 @@ class SkyBlockStats:
         with suppress(KeyError):
             self.nurse_shark_kills = int(stats['kills_nurse_shark'])
         with suppress(KeyError):
-            self.shadow_assassin_kills = int(stats['kills_shadow_assassin'])
-        with suppress(KeyError):
             self.crypt_souleater_deaths = int(stats['deaths_crypt_souleater'])
         with suppress(KeyError):
             self.zombie_knight_kills = int(stats['kills_zombie_knight'])
@@ -469,7 +483,8 @@ class SkyBlockStats:
         with suppress(KeyError):
             self.soul_of_the_alpha_deaths = int(stats['deaths_soul_of_the_alpha'])
         with suppress(KeyError):
-            self.dungeon_hub_precursor_ruins_no_abilities_no_return_best_time = int(stats['dungeon_hub_precursor_ruins_no_abilities_no_return_best_time'])
+            self.dungeon_hub_precursor_ruins_no_abilities_no_return_best_time = int(
+                stats['dungeon_hub_precursor_ruins_no_abilities_no_return_best_time'])
         with suppress(KeyError):
             self.crypt_wither_skeleton_kills = int(stats['kills_crypt_witherskeleton'])
         with suppress(KeyError):
@@ -477,4 +492,135 @@ class SkyBlockStats:
         with suppress(KeyError):
             self.spirit_wolf_kills = int(stats['kills_spirit_wolf'])
         with suppress(KeyError):
-            self.
+            self.spirit_sheep_kills = int(stats['kills_spirit_sheep'])
+        with suppress(KeyError):
+            self.spirit_bull_kills = int(stats['kills_spirit_bull'])
+        with suppress(KeyError):
+            self.spirit_rabbit_kills = int(stats['kills_spirit_rabbit'])
+        with suppress(KeyError):
+            self.thork_kills = int(stats['kills_thorn'])
+        with suppress(KeyError):
+            self.livid_clone_deaths = int(stats['deaths_livid_clone'])
+        with suppress(KeyError):
+            self.sniper_skeleton_deaths = int(stats['deaths_sniper_skeleton'])
+        with suppress(KeyError):
+            self.super_tank_zombie_kills = int(stats['kills_super_tank_zombie'])
+        with suppress(KeyError):
+            self.super_archer_kills = int(stats['kills_super_archer'])
+        with suppress(KeyError):
+            self.tentaclees_deaths = int(stats['deaths_tentaclees'])
+        with suppress(KeyError):
+            self.corrupted_protector_kills = int(stats['kills_corrupted_protector'])
+        with suppress(KeyError):
+            self.professer_guardian_summon_kills = int(stats['kills_professor_guardian_summon'])
+        with suppress(KeyError):
+            self.unstable_dragon_kills = int(stats['kills_unstable_dragon'])
+        with suppress(KeyError):
+            self.strong_dragon_kills = int(stats['kills_strong_dragon'])
+        with suppress(KeyError):
+            self.spirit_bat_kills = int(stats['kills_spirit_bat'])
+        with suppress(KeyError):
+            self.shadow_assassin_kills = int(stats['kills_shadow_assassin'])
+        with suppress(KeyError):
+            self.tentaclees_kills = int(stats['kills_tentaclees'])
+        with suppress(KeyError):
+            self.livid_deaths = int(stats['deaths_livid'])
+        with suppress(KeyError):
+            self.sadan_statue_deaths = int(stats['deaths_sadan_statue'])
+        with suppress(KeyError):
+            self.scary_jerry_kills = int(stats['kills_scary_jerry'])
+        with suppress(KeyError):
+            self.wither_gourd_kills = int(stats['kills_wither_gourd'])
+        with suppress(KeyError):
+            self.trick_or_treater_kills = int(stats['kills_trick_or_treater'])
+        with suppress(KeyError):
+            self.phantom_spirit_kills = int(stats['kills_phantom_spirit'])
+        with suppress(KeyError):
+            self.wraith_kills = int(stats['kills_wraith'])
+        with suppress(KeyError):
+            self.batty_witch_kills = int(stats['kills_batty_witch'])
+        with suppress(KeyError):
+            self.zombie_commander_kills = int(stats['kills_zombie_commander'])
+        with suppress(KeyError):
+            self.watcher_guardian_deaths = int(stats['deaths_watcher_guardian'])
+        with suppress(KeyError):
+            self.skeletor_prime_kills = int(stats['kills_skeletor_prime'])
+        with suppress(KeyError):
+            self.super_tank_zombie_deaths = int(stats['deaths_super_tank_zombie'])
+        with suppress(KeyError):
+            self.skeletor_prime_deaths = int(stats['deaths_skeletor_prime'])
+        with suppress(KeyError):
+            self.great_white_shark_kills = int(stats['kills_great_white_shark'])
+        with suppress(KeyError):
+            self.zombie_knight_deaths = int(stats['deaths_zombie_knight'])
+        with suppress(KeyError):
+            self.suffocation_deaths = int(stats['deaths_suffocation'])
+        with suppress(KeyError):
+            self.protector_dragon_deaths = int(stats['deaths_protector_dragon'])
+        with suppress(KeyError):
+            self.sadan_deaths = int(stats['deaths_sadan'])
+        with suppress(KeyError):
+            self.sadan_golem_deaths = int(stats['deaths_sadan_golem'])
+        with suppress(KeyError):
+            self.watcher_scarf_deaths = int(stats['deaths_watcher_scarf'])
+        with suppress(KeyError):
+            self.scarf_warrior_kills = int(stats['kills_scarf_warrior'])
+        with suppress(KeyError):
+            self.crypt_undead_deaths = int(stats['deaths_crypt_undead'])
+        with suppress(KeyError):
+            self.watcher_scarf_kills = int(stats['kills_watcher_scarf'])
+        with suppress(KeyError):
+            self.spirit_bat_deaths = int(stats['deaths_spirit_bat'])
+        with suppress(KeyError):
+            self.spirit_miniboss_deaths = int(stats['deaths_spirit_miniboss'])
+        with suppress(KeyError):
+            self.spirit_chicken_deaths = int(stats['deaths_spirit_chicken'])
+        with suppress(KeyError):
+            self.spirit_sheep_deaths = int(stats['deaths_spirit_sheep'])
+        with suppress(KeyError):
+            self.crypt_undead_marius_kills = int(stats['kills_crypt_undead_marius'])
+
+
+class SkyBlockObjective(object):
+    r""" Represents a SkyBlock Objective """
+
+    def __init__(self, objective_name: str, objective_data: dict):
+        self.name = objective_name
+        self.status = objective_data['status']
+        self.progress = objective_data['progress']
+        self.completed_at = datetime.datetime.fromtimestamp(objective_data['completed_at'] / 1000) if objective_data[
+                                                                                                          'completed_at'] != 0 else None
+
+
+class SkyBlockQuest(object):
+    r""" Represents a SkyBlock Quest """
+
+    def __init__(self, quest_name, quest_data):
+        self.name = quest_name
+        self.status = quest_data['status']
+        self.activated_at = datetime.datetime.fromtimestamp(quest_data['activated_at'] / 1000)
+        self.completed_at = datetime.datetime.fromtimestamp(quest_data['completed_at'] / 1000)
+
+
+class SkyBlockSlayer(object):
+    r""" Represents a SkyBlock Slayer """
+
+    def __init__(self, slayer, slayer_data):
+        self.slayer = slayer
+        self.claimed_levels = slayer_data['claimed_levels']
+        self.xp = slayer_data['xp']
+        self.level = types[slayer](slayer_data['xp'])
+
+
+class SkyBlockPet(object):
+    r""" Represents a SkyBlock Pet """
+
+    def __init__(self, pet_data):
+        self.uuid = pet_data['uuid']
+        self.type = pet_data['type']
+        self.xp = pet_data['exp']
+        self.active = pet_data['active']
+        self.tier = pet_data['tier']
+        self.held_item = pet_data['heldItem']
+        self.candy_used = pet_data['candyUsed']
+        self.skin = pet_data['skin']

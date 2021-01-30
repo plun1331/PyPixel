@@ -24,7 +24,19 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
+from .SkyBlockProfileMember import ProfileMember
+
 
 class SkyBlockProfile:
-    def __init__(self, profiledata: dict):
+    r"""Represents a SkyBlock profile."""
+    def __init__(self, profiledata: dict, cached, hypixel):
+        self._hypixel = hypixel
+        self.cached = cached
         self.name = profiledata['cute_name']
+        self.id = profiledata['profile_id']
+        self.members = []
+        for member in profiledata['members']:
+            self.members.append(ProfileMember(member, profiledata['members'][member], self._hypixel))
+        self.community_upgrades = profiledata['community_upgrades']
+        self.bank_balance = profiledata['banking']['balance']
+        self.bank_transactions = profiledata['banking']['transactions']

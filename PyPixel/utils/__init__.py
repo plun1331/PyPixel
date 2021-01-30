@@ -24,17 +24,5 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from .SkywarsStats import SkyWarsStats
-
-
-class PlayerStats:
-    r"""Base class for a player's statistics.
-    
-    Parameters
-    -----------
-    data: :class:`dict`
-        The raw player data from the API."""
-
-    def __init__(self, data: dict):
-        stats = data['stats']
-        self.skywars = SkyWarsStats(stats)
+from .Hypixel import Hypixel
+from .SkyBlock import SkyBlock
