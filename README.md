@@ -115,4 +115,6 @@ GUILDMASTER
 
 ## 0.1.5
 - Released to PyPI
+
+## 0.1.6
 - Add some methods
