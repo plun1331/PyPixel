@@ -128,7 +128,7 @@ class ProfileMember(object):
                       SkyBlock.getSkillLevel(memberdata['experience_skill_foraging'])]
             self.skill_average = sum(skills) / len(skills)
         with suppress(KeyError):
-            self.fishing_bag = Hypixel.parseNBT(memberdata['fishing_bag'])
+            self.fishing_bag = Hypixel.parseNBT(memberdata['fishing_bag']['data'])
         with suppress(KeyError):
             self.equipped_wardrobe_slot = memberdata['wardrobe_equipped_slot']
         with suppress(KeyError):
