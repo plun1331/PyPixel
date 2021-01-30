@@ -21,8 +21,15 @@ python3 -m pip install -U pypixel-api
 # Windows
 py -3 -m pip install -U pypixel-api
 ```
+Or, you can install the development version from the GitHub:
 
+```shell
+# Linux/macOS
+python3 -m pip install -U git+https://github.com/plun1331/PyPixel
 
+# Windows
+py -3 -m pip install -U git+https://github.com/plun1331/PyPixel
+```
 
 # A few examples
 
