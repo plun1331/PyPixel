@@ -24,11 +24,26 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
+
 class PyPixelError(Exception):
     r"""Base exception class for PyPixel."""
 
-class NotFound(Exception):
+
+class HTTPExeption(PyPixelError):
+    r"""Base exception for when the API returns a non 200 status code."""
+
+
+class APIError(HTTPExeption):
+    r"""Exeption that's thrown when the API returns a 500 range status code."""
+
+
+class ClientError(HTTPExeption):
+    r"""Exeption that's thrown when the API returns a 400 range status code."""
+
+
+class NotFound(ClientError):
     r"""Exception thats thrown when the API returns a 404 status code."""
+
 
 class PlayerNotFound(NotFound):
     r"""Exception thats thrown when a player couldn't be found.
@@ -37,8 +52,10 @@ class PlayerNotFound(NotFound):
     -----------
     reason: :class:`str`
         The reason the player couldn't be found."""
+
     def __init__(self, reason):
         self.reason = reason
+
 
 class GuildNotFound(NotFound):
     r"""Exception thats thrown when a guild couldn't be found.
@@ -47,7 +64,6 @@ class GuildNotFound(NotFound):
     -----------
     reason: :class:`str`
         The reason the guild couldn't be found."""
+
     def __init__(self, reason):
         self.reason = reason
-
-    

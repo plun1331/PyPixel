@@ -27,13 +27,15 @@ SOFTWARE.
 import datetime
 from contextlib import suppress
 
-class GuildMember:
+
+class GuildMember(object):
     r"""Represents a Hypixel guild member.
     
     Parameters
     -----------
     memberdata: :class:`dict`
         A dict containing the member's data."""
+
     def __init__(self, memberdata):
         with suppress(KeyError):
             self.uuid = memberdata['uuid']

@@ -28,7 +28,8 @@ from contextlib import suppress
 import datetime
 from .GuildMember import GuildMember
 from .GuildRank import GuildRank
-from . import Other
+from .utils import Hypixel
+
 
 class Guild(object):
     r"""Represents a Hypixel guild.
@@ -43,9 +44,10 @@ class Guild(object):
         
     hypixel: :class:`.Hypixel`
         The .Hypixel class used to make the request."""
+
     def __init__(self, data, cached, hypixel):
         guilddata = data['guild']
-        self.hypixel = hypixel # This is done so I can call functions from the Hypixel class
+        self.hypixel = hypixel  # This is done so I can call functions from the Hypixel class
         self.cached = cached
         with suppress(KeyError):
             self.raw = guilddata
@@ -56,7 +58,7 @@ class Guild(object):
         with suppress(KeyError):
             self.coins = guilddata['coins']
         with suppress(KeyError):
-            self.created = datetime.datetime.fromtimestamp(guilddata['created']/1000)
+            self.created = datetime.datetime.fromtimestamp(guilddata['created'] / 1000)
         self.members = [GuildMember(member) for member in guilddata['members']]
         with suppress(KeyError):
             self.joinable = guilddata['joinable']
@@ -79,7 +81,7 @@ class Guild(object):
         with suppress(KeyError):
             self.chat_muted_since = guilddata['chatMute']
         with suppress(KeyError):
-            self.level = Other.guildlevel(guilddata['exp'])
+            self.level = Hypixel.guildlevel(guilddata['exp'])
         with suppress(KeyError):
             self.xp = guilddata['exp']
         with suppress(KeyError):
@@ -97,4 +99,3 @@ class Guild(object):
         uuid = member.uuid
         player = await self.hypixel.get_player(uuid)
         return player
-        

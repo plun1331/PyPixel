@@ -24,26 +24,5 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-import datetime
-from contextlib import suppress
-
-
-class GuildRank(object):
-    r"""Represents a Hypixel guild rank.
-    
-    Parameters
-    -----------
-    rankdata: :class:`dict`
-        A dict containing the rank's data."""
-
-    def __init__(self, rankdata):
-        with suppress(KeyError):
-            self.name = rankdata['name']
-        with suppress(KeyError):
-            self.default = rankdata['defailt']
-        with suppress(KeyError):
-            self.tag = rankdata['tag']
-        with suppress(KeyError):
-            self.created = datetime.datetime.fromtimestamp(rankdata['created'] / 1000)
-        with suppress(KeyError):
-            self.priority = rankdata['priority']
+from .Hypixel import Hypixel
+from .SkyBlock import SkyBlock

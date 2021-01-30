@@ -25,15 +25,16 @@ SOFTWARE.
 """
 
 from .SkywarsStats import SkyWarsStats
-from contextlib import suppress
 
-class PlayerStats:
+
+class PlayerStats(object):
     r"""Base class for a player's statistics.
     
     Parameters
     -----------
     data: :class:`dict`
         The raw player data from the API."""
+
     def __init__(self, data: dict):
         stats = data['stats']
         self.skywars = SkyWarsStats(stats)

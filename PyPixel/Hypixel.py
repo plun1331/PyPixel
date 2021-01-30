@@ -24,12 +24,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-import typing
+import aiohttp
+from typing import List, Tuple, Literal
 from .Player import Player
 from .Errors import PlayerNotFound, GuildNotFound
 from .Cache import Cache
-from .Other import sendRequest
 from .Guild import Guild
+from .SkyBlockProfile import SkyBlockProfile
 
 
 class Hypixel:
@@ -46,9 +47,11 @@ class Hypixel:
     clear_cache_after: Optional[:class:`int`]
         How often the cache should clear in seconds.
     """
-    def __init__(self, *, api_key: str, base_url: str="https://api.hypixel.net/", clear_cache_after: int=300):
+
+    def __init__(self, *, api_key: str, base_url: str = "https://api.hypixel.net/", clear_cache_after: int = 300):
         self.api_key = str(api_key)
-        self.base_url = str(base_url) if str(base_url).endswith('/') else str(base_url) + '/'
+        b = str(base_url) if str(base_url).endswith('/') else str(base_url) + '/'
+        self.base_url = b if b.startswith('https://') or b.startswith('http://') else 'https://' + b
         self.cache = Cache(int(clear_cache_after))
 
     async def get_player(self, uuid: str) -> Player:
@@ -71,8 +74,8 @@ class Hypixel:
         :class:`.PlayerNotFound`
             The player couldn't be found. 
             This could happen for a variety of reasons."""
-        url = self.base_url + 'player' + '?key=' + self.api_key + '&uuid=' + uuid
-        data, cached = await sendRequest(url, self.cache)
+        url = self.base_url + '{0.base_url}player?key={0.api_key}&uuid={1}'.format(self, uuid)
+        data, cached = await self._send(url)
         if not data['success']:
             raise PlayerNotFound(data['cause'])
         if not cached:
@@ -80,7 +83,7 @@ class Hypixel:
         player = Player(data, cached, self)
         return player
 
-    async def get_guild(self, arg: str, by: typing.Literal['id', 'name', 'player']) -> Guild:
+    async def get_guild(self, arg: str, by: Literal['id', 'name', 'player']) -> Guild:
         r"""|coro|
         
         Gets a guild from the Hypixel API using the `/guild` endpoint.
@@ -102,20 +105,125 @@ class Hypixel:
         --------
         :class:`TypeError`
             An invalid `by` param was provided."""
-        url = self.base_url + 'guild?key=' + self.api_key + '&'
+        url = '{0.base_url}guild?key={0.api_key}&'.format(self)
         if by.lower() == 'id':
-            url += 'id=' + arg
+            url += 'id={0}'.format(arg)
         elif by.lower() == 'name':
-            url += 'name=' + arg
+            url += 'name={0}'.format(arg)
         elif by.lower() == 'player':
-            url += 'player=' + arg
+            url += 'player={0}'.format(arg)
         else:
             raise TypeError("Invalid input: " + by)
-        data, cached = await sendRequest(url, self.cache)
+        data, cached = await self._send(url)
         if not data['success']:
             raise GuildNotFound(data['cause'])
         if not cached:
             await self.cache.cache(url, data)
         guild = Guild(data, cached, self)
         return guild
-        
+
+    async def get_profiles(self, uuid: str) -> List[SkyBlockProfile]:
+        r"""|coro|
+
+        Gets a player's SkyBlock profiles from the Hypixel API using the `/skyblock/profiles` endpoint.
+
+        Parameters
+        -----------
+        uuid: :class:`str`
+            The player's UUID.
+
+        Returns
+        --------
+        :class:`.Guild`
+            The returned guild.
+
+        Raises
+        --------
+        :class:`PlayerNotFound`
+            The player's profiles couldn't be found."""
+        url = '{0.base_url}skyblock/profiles?key={0.api_key}&uuid={1}'.format(self, uuid)
+        data, cached = await self._send(url)
+        if not data['success']:
+            raise PlayerNotFound(data['cause'])
+        if not cached:
+            await self.cache.cache(url, data)
+        profiles = []
+        for profile in data['profiles']:
+            profiles.append(SkyBlockProfile(profile, cached, self))
+        return profiles
+
+    async def get_name(self, uuid: str) -> str:
+        """
+
+        Parameters
+        ----------
+        uuid: :class:`str`
+            The player's UUID.
+
+        Returns
+        -------
+        :class:`str`
+            The player's name.
+
+        Raises
+        -------
+        :class:`.PlayerNotFound
+            The UUID is invalid.
+        """
+        data, cached = await self._send("https://sessionserver.mojang.com/session/minecraft/profile/{0}".format(uuid))
+        try:
+            return data['name']
+        except:
+            raise PlayerNotFound
+
+    async def get_uuid(self, name: str) -> str:
+        """
+
+        Parameters
+        ----------
+        name: :class:`str`
+            The player's name.
+
+        Returns
+        -------
+        :class:`str`
+            The player's UUID.
+
+        Raises
+        -------
+        :class:`.PlayerNotFound
+            The name is invalid.
+        """
+        data, cached = await self._send("https://api.mojang.com/users/profiles/minecraft/{0}".format(name))
+        try:
+            return data['name']
+        except:
+            raise PlayerNotFound
+
+    async def _send(self, url: str) -> Tuple[dict, bool]:
+        r"""|coro|
+
+        Sends a request to the specified url.
+
+        Parameters
+        -----------
+        url: :class:`str`
+            The URL the request will be sent to.
+
+
+        Returns
+        --------
+        :class:`dict`
+            The json data from the API.
+
+        :class:`bool`
+            Whether or not the data was retrieved from the cache.
+        """
+        data = await self.cache.getFromCache(url)
+        cached = True
+        if data is None:
+            async with aiohttp.ClientSession() as session:
+                async with session.get(url) as response:
+                    data = await response.json()
+            cached = False
+        return data, cached

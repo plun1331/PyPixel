@@ -25,12 +25,13 @@ SOFTWARE.
 """
 
 from .Firework import Firework
-from . import Other
 import datetime
 from contextlib import suppress
 from .PlayerStats import PlayerStats
+from .utils import Hypixel
 
-class Player:
+
+class Player(object):
     r"""Represents a Hypixel player.
     
     Parameters
@@ -43,10 +44,11 @@ class Player:
         
     hypixel: :class:`.Hypixel`
         The .Hypixel class used to make the request."""
+
     def __init__(self, data: dict, cached: bool, hypixel):
         playerdata = data['player']
         self.raw = playerdata
-        self.hypixel = hypixel # This is done so I can call functions from the Hypixel class
+        self._hypixel = hypixel  # This is done so I can call functions from the Hypixel class
         with suppress(KeyError):
             self.uuid = playerdata['uuid']
         with suppress(KeyError):
@@ -76,7 +78,7 @@ class Player:
         with suppress(KeyError):
             self.experience = playerdata['networkExp']
         with suppress(KeyError):
-            self.level = Other.playerLevel(playerdata['networkExp'])
+            self.level = Hypixel.playerLevel(playerdata['networkExp'])
         with suppress(KeyError):
             self.name = playerdata['playername']
         with suppress(KeyError):
@@ -94,7 +96,7 @@ class Player:
         with suppress(KeyError):
             self.rank_plus = playerdata['rankPlusColor']
         with suppress(KeyError):
-            self.last_logout = datetime.datetime.fromtimestamp(playerdata['lastLogout']/1000)
+            self.last_logout = datetime.datetime.fromtimestamp(playerdata['lastLogout'] / 1000)
         with suppress(KeyError):
             self.cloak = playerdata['currentCloak']
         with suppress(KeyError):
@@ -108,7 +110,7 @@ class Player:
         with suppress(KeyError):
             self.recently_played = playerdata['mostRecentGameType']
         with suppress(KeyError):
-            self.rank = Other.getRank(playerdata)
+            self.rank = Hypixel.getRank(playerdata)
         with suppress(KeyError):
             self.cached = cached
 
@@ -121,7 +123,15 @@ class Player:
         --------
         :class:`.Guild`
             The returned guild."""
-        guild = await self.hypixel.get_guild(self.uuid, 'player')
-        return guild
-    
+        return await self._hypixel.get_guild(self.uuid, 'player')
 
+    async def profiles(self):
+        r"""|coro|
+
+        Gets a tuple of the player's SkyBlock profiles.
+
+        Returns
+        --------
+        :class:`(.SkyBlockProfile)`
+            A tuple containing the player's SkyBlock profiles."""
+        return await self._hypixel.get_profiles(self.uuid)

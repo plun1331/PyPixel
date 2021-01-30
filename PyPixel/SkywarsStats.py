@@ -24,16 +24,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from . import Other
+from .utils import Hypixel
 from contextlib import suppress
 
-class SkyWarsStats:
+
+class SkyWarsStats(object):
     r"""Base class for a player's SkyWars stats.
     
     Parameters
     -----------
     playerstats: :class:`dict`
         The raw player stats data from the API."""
+
     def __init__(self, playerstats: dict):
         stats = playerstats['SkyWars']
         self.raw = stats
@@ -47,16 +49,16 @@ class SkyWarsStats:
         with suppress(KeyError):
             self.experience = stats['skywars_experience']
         with suppress(KeyError):
-            self.level = Other.skywarsLevel(stats['skywars_experience'])
+            self.level = Hypixel.skywarsLevel(stats['skywars_experience'])
 
-
-    class Overall:
+    class Overall(object):
         r"""A player's overall SkyWars stats.
     
         Parameters
         -----------
         stats: :class:`dict`
             The raw SkyWars stats data from the API."""
+
         def __init__(self, stats: dict):
             with suppress(KeyError):
                 self.packages = stats['packages']
@@ -131,13 +133,14 @@ class SkyWarsStats:
             with suppress(KeyError):
                 self.bow_kills = stats['bow_kills']
 
-    class Solo:
+    class Solo(object):
         r"""A player's solo SkyWars stats.
     
         Parameters
         -----------
         stats: :class:`dict`
             The raw SkyWars stats data from the API."""
+
         def __init__(self, stats: dict):
             self.normal = self.Normal(stats)
             self.insane = self.Insane(stats)
@@ -184,13 +187,14 @@ class SkyWarsStats:
             with suppress(KeyError):
                 self.longest_bow_kill = stats['longest_bow_kill_solo']
 
-        class Normal:
+        class Normal(object):
             r"""A player's solo normal SkyWars stats.
     
             Parameters
             -----------
             stats: :class:`dict`
                 The raw SkyWars stats data from the API."""
+
             def __init__(self, stats: dict):
                 with suppress(KeyError):
                     self.losses = stats['losses_solo_normal']
@@ -200,14 +204,15 @@ class SkyWarsStats:
                     self.kills = stats['kills_solo_normal']
                 with suppress(KeyError):
                     self.wins = stats['wins_solo_normal']
-        
-        class Insane:
+
+        class Insane(object):
             r"""A player's solo insane SkyWars stats.
     
             Parameters
             -----------
             stats: :class:`dict`
                 The raw SkyWars stats data from the API."""
+
             def __init__(self, stats: dict):
                 with suppress(KeyError):
                     self.losses = stats['losses_solo_insane']
@@ -218,13 +223,14 @@ class SkyWarsStats:
                 with suppress(KeyError):
                     self.wins = stats['wins_solo_insane']
 
-    class Teams:
+    class Teams(object):
         r"""A player's teams SkyWars stats.
     
         Parameters
         -----------
         stats: :class:`dict`
             The raw SkyWars stats data from the API."""
+
         def __init__(self, stats: dict):
             self.normal = self.Normal(stats)
             self.insane = self.Insane(stats)
@@ -271,13 +277,14 @@ class SkyWarsStats:
             with suppress(KeyError):
                 self.bow_kills = stats['bow_kills_team']
 
-        class Normal:
+        class Normal(object):
             r"""A player's teams normal SkyWars stats.
     
             Parameters
             -----------
             stats: :class:`dict`
                 The raw SkyWars stats data from the API."""
+
             def __init__(self, stats):
                 with suppress(KeyError):
                     self.deaths = stats['deaths_team_normal']
@@ -288,13 +295,14 @@ class SkyWarsStats:
                 with suppress(KeyError):
                     self.wins = stats['wins_team_normal']
 
-        class Insane:
+        class Insane(object):
             r"""A player's teams insane SkyWars stats.
     
             Parameters
             -----------
             stats: :class:`dict`
                 The raw SkyWars stats data from the API."""
+
             def __init__(self, stats):
                 with suppress(KeyError):
                     self.losses = stats['losses_team_insane']
@@ -305,14 +313,14 @@ class SkyWarsStats:
                 with suppress(KeyError):
                     self.wins = stats['wins_team_insane']
 
-
-    class Mega:
+    class Mega(object):
         r"""A player's mega SkyWars stats.
     
         Parameters
         -----------
         stats: :class:`dict`
             The raw SkyWars stats data from the API."""
+
         def __init__(self, stats):
             with suppress(KeyError):
                 self.kit = stats['activeKit_MEGA']
@@ -353,14 +361,14 @@ class SkyWarsStats:
             with suppress(KeyError):
                 self.mob_kills = stats['mob_kills_mega']
 
-
-    class Ranked:
+    class Ranked(object):
         r"""A player's ranked SkyWars stats.
     
         Parameters
         -----------
         stats: :class:`dict`
             The raw SkyWars stats data from the API."""
+
         def __init__(self, stats):
             with suppress(KeyError):
                 self.kit = stats['activeKit_RANKED']
@@ -399,14 +407,14 @@ class SkyWarsStats:
             with suppress(KeyError):
                 self.bow_kills = stats['bow_kills_ranked']
 
-
-    class Lab:
+    class Lab(object):
         r"""A player's laboratory SkyWars stats.
     
         Parameters
         -----------
         stats: :class:`dict`
             The raw SkyWars stats data from the API."""
+
         def __init__(self, stats: dict):
             self.solo = self.Solo(stats)
             self.teams = self.Teams(stats)
@@ -479,7 +487,8 @@ class SkyWarsStats:
             with suppress(KeyError):
                 self.rush_wins = stats['lab_win_rush_lab']
 
-        class Solo:
+        class Solo(object):
+            r"""Represents SkyWars Solo stats."""
             def __init__(self, stats: dict):
                 with suppress(KeyError):
                     self.survived_players = stats['survived_players_lab_solo']
@@ -532,7 +541,8 @@ class SkyWarsStats:
                 with suppress(KeyError):
                     self.rush_wins = stats['lab_win_rush_lab_solo']
 
-        class Teams:
+        class Teams(object):
+            r"""Represents SkyWars Teams stats."""
             def __init__(self, stats: dict):
                 with suppress(KeyError):
                     self.survived_playes = stats['survived_players_lab_team']
@@ -580,4 +590,3 @@ class SkyWarsStats:
                     self.falling_kills = stats['fall_kills_lab_team']
                 with suppress(KeyError):
                     self.rush_wins = stats['lab_win_rush_lab_team']
-

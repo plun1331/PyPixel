@@ -11,11 +11,9 @@ An asynchronous wrapper for the Hypixel API.
 
 """
 from .Errors import *
-from . import Other
 from .Cache import Cache
 from .Guild import Guild, GuildMember, GuildRank
 from .Firework import Firework
 from .Hypixel import Hypixel
 from .Player import Player
 from .PlayerStats import PlayerStats, SkyWarsStats
-
