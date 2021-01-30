@@ -196,7 +196,7 @@ class Hypixel:
         """
         data, cached = await self._send("https://api.mojang.com/users/profiles/minecraft/{0}".format(name))
         try:
-            return data['name']
+            return data['id']
         except:
             raise PlayerNotFound
 
