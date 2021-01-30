@@ -112,3 +112,6 @@ GUILDMASTER
 - Added a new requirement, `NBT` (Used for parsing NBT data).
 - Added some exception classes.
 - Started subclassing `object` for no paticular reason.
+
+## 0.1.5
+- Released to PyPI
