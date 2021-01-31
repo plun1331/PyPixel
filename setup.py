@@ -19,15 +19,24 @@ setup(
     long_description=README,
     long_description_content_type="text/markdown",
     url="https://github.com/plun1331/PyPixel",
-    author="plun1331",
-    packages=["PyPixel"],
     include_package_data=True,
+    project_urls={
+        "Documentation": "https://pypixel.readthedocs.io/en/latest/",
+        "Issue tracker": "https://github.com/plun1331/PyPixel/issues",
+      },
+    author="plun1331",
+    packages=["PyPixel", "PyPixel.utils"],
     install_requires=["aiohttp", "nbt"],
     python_requires='>=3.6',
+    license='MIT',
     classifiers=[
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
         'Operating System :: OS Independent',
-        'Programming Language :: Python :: 3.8'
+        'Programming Language :: Python :: 3.8',
+        'Topic :: Internet',
+        'Topic :: Software Development :: Libraries',
+        'Topic :: Software Development :: Libraries :: Python Modules',
+        'Topic :: Utilities',
     ]
 )
