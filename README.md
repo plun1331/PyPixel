@@ -9,7 +9,7 @@ https://pypi.python.org/pypi/pypixel-api)
 [![Documentation Status](https://readthedocs.org/projects/pypixel/badge/?version=latest)](
 https://pypixel.readthedocs.io/en/latest/)
 
-An asynchronous wrapper for the Hypixel API.
+An asynchronous Python wrapper for the Hypixel API.
 
 
 
