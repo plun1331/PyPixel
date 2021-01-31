@@ -33,21 +33,19 @@ from .utils import Hypixel
 
 class Guild(object):
     r"""Represents a Hypixel guild.
-    
-    Parameters
-    -----------
-    data: :class:`dict`
-        The raw data from the API.
 
-    cached: :class:`bool`
-        Whether or not the data was retrieved from the cache.
-        
-    hypixel: :class:`.Hypixel`
-        The .Hypixel class used to make the request."""
+    :param data: The raw data from the API.
+    :type data: dict
+
+    :param cached: Whether or not the data was retrieved from the cache.
+    :type cached: bool
+
+    :param hypixel: The Hypixel class used to make the request.
+    :type hypixel: PyPixel.Hypixel.Hypixel"""
 
     def __init__(self, data, cached, hypixel):
         guilddata = data['guild']
-        self.hypixel = hypixel  # This is done so I can call functions from the Hypixel class
+        self._hypixel = hypixel  # This is done so I can call functions from the Hypixel class
         self.cached = cached
         with suppress(KeyError):
             self.raw = guilddata
@@ -93,12 +91,11 @@ class Guild(object):
     async def get_member(self, member: GuildMember):
         r"""|coro|
         
-        Gets a .Player object from a .GuildMember
+        Gets a Player object from a GuildMember
 
-        Returns
-        --------
-        :class:`.Player`
+        :return: The retrieved player.
+        :rtype:`PyPixel.Player.Player`
             The returned player."""
         uuid = member.uuid
-        player = await self.hypixel.get_player(uuid)
+        player = await self._hypixel.get_player(uuid)
         return player

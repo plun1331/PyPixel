@@ -35,18 +35,15 @@ from .SkyBlockProfile import SkyBlockProfile
 
 class Hypixel:
     r"""The main class that will be used for requesting information from the Hypixel API.
-    
-    Parameters
-    -----------
-    api_key: :class:`str`
-        Your Hypixel API key.
-    
-    base_url: Optional[:class:`str`]
-        The base URL for the Hypixel API. Defaults to 'https://api.hypixel.net/'.
 
-    clear_cache_after: Optional[:class:`int`]
-        How often the cache should clear in seconds.
-    """
+    :param api_key: Your Hypixel API key.
+    :type api_key: str
+
+    :param base_url: The base URL for the Hypixel API. Defaults to 'https://api.hypixel.net/'.
+    :type base_url: str, optional
+
+    :param clear_cache_after: How often the cache should clear in seconds.
+    :type clear_cache_after: int, optional"""
 
     def __init__(self, *, api_key: str, base_url: str = "https://api.hypixel.net/", clear_cache_after: int = 300):
         self.api_key = str(api_key)
@@ -59,21 +56,14 @@ class Hypixel:
         
         Gets a player from the Hypixel API using the `/player` endpoint.
         
-        Parameters
-        -----------
-        uuid: :class:`str`
-            The UUID you are requesting player data for.
+        :param uuid: The UUID you are requesting player data for.
+        :type uuid: str
 
-        Returns
-        --------
-        :class:`.Player`
-            The returned player.
+        :raises PyPixel.Errors.PlayerNotFound: The player couldn't be found.
 
-        Raises
-        --------
-        :class:`.PlayerNotFound`
-            The player couldn't be found. 
-            This could happen for a variety of reasons."""
+        :return: The player from the API.
+        :rtype: PyPixel.Player.Player"""
+
         url = self.base_url + '{0.base_url}player?key={0.api_key}&uuid={1}'.format(self, uuid)
         data, cached = await self._send(url)
         if not data['success']:
@@ -86,25 +76,20 @@ class Hypixel:
     async def get_guild(self, arg: str, by: Literal['id', 'name', 'player']) -> Guild:
         r"""|coro|
         
-        Gets a guild from the Hypixel API using the `/guild` endpoint.
+        Gets a guild from the Hypixel API using the ``/guild`` endpoint.
         
-        Parameters
-        -----------
-        arg: :class:`str`
-            The guild ID or name, or a player UUID.
+        :param arg: The guild ID or name, or a player UUID.
+        :type arg: str
 
-        by: :class:`typing.Literal['id', 'name', 'player']`
-            The type of `arg` you provided.
+        :param by: The type of 'arg' you provided.
+        :type by: Literal['id', 'name', 'player']
 
-        Returns
-        --------
-        :class:`.Guild`
-            The returned guild.
+        :raises TypeError: Invalid 'by' parameter.
+        :raises PyPixel.Errors.GuildNotFound: The guild was not found.
 
-        Raises
-        --------
-        :class:`TypeError`
-            An invalid `by` param was provided."""
+        :return: The guild from the API.
+        :rtype: PyPixel.Guild.Guild"""
+
         url = '{0.base_url}guild?key={0.api_key}&'.format(self)
         if by.lower() == 'id':
             url += 'id={0}'.format(arg)
@@ -119,6 +104,8 @@ class Hypixel:
             raise GuildNotFound(data['cause'])
         if not cached:
             await self.cache.cache(url, data)
+        if by.lower() == 'player' and data['guild'] is None:
+            raise GuildNotFound("Player {0} is not in a guild.".format(arg))
         guild = Guild(data, cached, self)
         return guild
 
@@ -127,20 +114,14 @@ class Hypixel:
 
         Gets a player's SkyBlock profiles from the Hypixel API using the `/skyblock/profiles` endpoint.
 
-        Parameters
-        -----------
-        uuid: :class:`str`
-            The player's UUID.
+        :param uuid: The player's UUID.
+        :type uuid: str
 
-        Returns
-        --------
-        :class:`.Guild`
-            The returned guild.
+        :raises PyPixel.Errors.PlayerNotFound: The player's profiles could not be found.
 
-        Raises
-        --------
-        :class:`PlayerNotFound`
-            The player's profiles couldn't be found."""
+        :return: A list containing the player's profiles.
+        :rtype: List[PyPixel.SkyBlockProfile.SkyBlockProfile]"""
+
         url = '{0.base_url}skyblock/profiles?key={0.api_key}&uuid={1}'.format(self, uuid)
         data, cached = await self._send(url)
         if not data['success']:
@@ -153,23 +134,18 @@ class Hypixel:
         return profiles
 
     async def get_name(self, uuid: str) -> str:
-        """
+        r"""|coro|
 
-        Parameters
-        ----------
-        uuid: :class:`str`
-            The player's UUID.
+        Gets a player's name from their UUID. This does not use the Hypixel API.
 
-        Returns
-        -------
-        :class:`str`
-            The player's name.
+        :param uuid: The player's UUID.
+        :type uuid: str
 
-        Raises
-        -------
-        :class:`.PlayerNotFound
-            The UUID is invalid.
-        """
+        :raises PyPixel.Errors.PlayerNotFound: The UUID is invalid.
+
+        :return: The player's name.
+        :rtype: str"""
+
         data, cached = await self._send("https://sessionserver.mojang.com/session/minecraft/profile/{0}".format(uuid))
         try:
             return data['name']
@@ -177,23 +153,18 @@ class Hypixel:
             raise PlayerNotFound
 
     async def get_uuid(self, name: str) -> str:
-        """
+        r"""|coro|
 
-        Parameters
-        ----------
-        name: :class:`str`
-            The player's name.
+        Get's a player's UUID from their name.
 
-        Returns
-        -------
-        :class:`str`
-            The player's UUID.
+        :param name: The player's name.
+        :type name: str
 
-        Raises
-        -------
-        :class:`.PlayerNotFound
-            The name is invalid.
-        """
+        :raises PyPixel.Errors.PlayerNotFound: The name is invalid.
+
+        :return: The player's UUID.
+        :rtype: str"""
+
         data, cached = await self._send("https://api.mojang.com/users/profiles/minecraft/{0}".format(name))
         try:
             return data['id']
@@ -205,20 +176,13 @@ class Hypixel:
 
         Sends a request to the specified url.
 
-        Parameters
-        -----------
-        url: :class:`str`
-            The URL the request will be sent to.
+        :param url: The URL the request will be sent to.
+        :type url: str
 
+        :return: The json data from the API, and a boolean value indicating
+            whether or not the data was retrieved from the cache.
+        :rtype: Tuple[dict, bool]"""
 
-        Returns
-        --------
-        :class:`dict`
-            The json data from the API.
-
-        :class:`bool`
-            Whether or not the data was retrieved from the cache.
-        """
         data = await self.cache.getFromCache(url)
         cached = True
         if data is None:

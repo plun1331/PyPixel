@@ -29,21 +29,20 @@ import datetime
 from contextlib import suppress
 from .PlayerStats import PlayerStats
 from .utils import Hypixel
+from .Errors import GuildNotFound
 
 
 class Player(object):
     r"""Represents a Hypixel player.
     
-    Parameters
-    -----------
-    data: :class:`dict`
-        The raw data from the API.
+    :param data: The raw data from the API.
+    :type data: dict
 
-    cached: :class:`bool`
-        Whether or not the data was retrieved from the cache.
-        
-    hypixel: :class:`.Hypixel`
-        The .Hypixel class used to make the request."""
+    :param cached: Whether or not the data was retrieved from the cache.
+    :type cached: bool
+
+    :param hypixel: The PyPixel.Hypixel class used to make the request.
+    :type hypixel: PyPixel.Hypixel.Hypixel"""
 
     def __init__(self, data: dict, cached: bool, hypixel):
         playerdata = data['player']
@@ -128,21 +127,21 @@ class Player(object):
     async def get_guild(self):
         r"""|coro|
         
-        Gets the .Guild object that the player belongs to.
+        Gets the Guild object that the player belongs to.
 
-        Returns
-        --------
-        :class:`.Guild`
-            The returned guild."""
-        return await self._hypixel.get_guild(self.uuid, 'player')
+        :return: The player's guild.
+        :rtype: PyPixel.Guild.Guild, optional"""
+        try:
+            return await self._hypixel.get_guild(self.uuid, 'player')
+        except GuildNotFound as e:
+            if e.reason == "Player {0} is not in a guild.".format(self.uuid):
+                return None
 
     async def profiles(self):
         r"""|coro|
 
-        Gets a tuple of the player's SkyBlock profiles.
+        Gets the player's SkyBlock profiles.
 
-        Returns
-        --------
-        :class:`(.SkyBlockProfile)`
-            A tuple containing the player's SkyBlock profiles."""
+        :return: A list containing the player's SkyBlock profiles.
+        :rtype: List[PyPixel.SkyBlockProfile.SkyBlockProfile]"""
         return await self._hypixel.get_profiles(self.uuid)

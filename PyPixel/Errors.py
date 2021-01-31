@@ -30,15 +30,15 @@ class PyPixelError(Exception):
 
 
 class HTTPExeption(PyPixelError):
-    r"""Base exception for when the API returns a non 200 status code."""
+    r"""Base exception class for when the API returns a non 200 status code."""
 
 
 class APIError(HTTPExeption):
-    r"""Exeption that's thrown when the API returns a 500 range status code."""
+    r"""Exception that's thrown when the API returns a 500 range status code."""
 
 
 class ClientError(HTTPExeption):
-    r"""Exeption that's thrown when the API returns a 400 range status code."""
+    r"""Exception that's thrown when the API returns a 400 range status code."""
 
 
 class NotFound(ClientError):
@@ -47,11 +47,9 @@ class NotFound(ClientError):
 
 class PlayerNotFound(NotFound):
     r"""Exception thats thrown when a player couldn't be found.
-    
-    Parameters
-    -----------
-    reason: :class:`str`
-        The reason the player couldn't be found."""
+
+    :param reason: The reason the player couldn't be found.
+    :type reason: str"""
 
     def __init__(self, reason):
         self.reason = reason
@@ -60,10 +58,8 @@ class PlayerNotFound(NotFound):
 class GuildNotFound(NotFound):
     r"""Exception thats thrown when a guild couldn't be found.
     
-    Parameters
-    -----------
-    reason: :class:`str`
-        The reason the guild couldn't be found."""
+    :param reason: The reason the guild couldn't be found.
+    :type reason: str"""
 
     def __init__(self, reason):
         self.reason = reason

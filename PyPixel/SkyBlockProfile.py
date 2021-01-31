@@ -29,7 +29,17 @@ from contextlib import suppress
 
 
 class SkyBlockProfile(object):
-    r"""Represents a SkyBlock profile."""
+    r"""Represents a SkyBlock profile.
+
+    :param profiledata: The profile's data from the API.
+    :type profiledata: dict
+
+    :param cached: A boolean indicating if the profile's data was retrieved from the cache.
+    :type cached: bool
+
+    :param hypixel: The Hypixel class used to get the profile.
+    :type hypixel: PyPixel.Hypixel.Hypixel"""
+
     def __init__(self, profiledata: dict, cached, hypixel):
         self._hypixel = hypixel
         self.cached = cached

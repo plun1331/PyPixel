@@ -31,16 +31,14 @@ from contextlib import suppress
 class GuildRank(object):
     r"""Represents a Hypixel guild rank.
     
-    Parameters
-    -----------
-    rankdata: :class:`dict`
-        A dict containing the rank's data."""
+    :param rankdata: A dict containing the rank's data.
+    :type rankdata: dict"""
 
     def __init__(self, rankdata):
         with suppress(KeyError):
             self.name = rankdata['name']
         with suppress(KeyError):
-            self.default = rankdata['defailt']
+            self.default = rankdata['default']
         with suppress(KeyError):
             self.tag = rankdata['tag']
         with suppress(KeyError):

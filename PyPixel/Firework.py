@@ -28,15 +28,13 @@ SOFTWARE.
 class Firework(object):
     r"""Represents a firework. Interesting, right?
 
-    Parameters
-    --------
-    :class:`dict`
-        The raw firework data."""
+    :param firework: The raw firework data.
+    :type firework: dict"""
 
-    def __init__(self, firework):
+    def __init__(self, firework: dict):
         self.flight_duration = firework['flight_duaration']
         self.shape = firework['shape']
-        self.train_enabled = firework['trail']
+        self.trail_enabled = firework['trail']
         self.twinkles = firework['twinkle']
         self.colors = firework['colors']
         self.fading_colors = firework['fade_colors']

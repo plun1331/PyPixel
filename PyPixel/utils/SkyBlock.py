@@ -49,11 +49,10 @@ class SkyBlock:
             if item not in Items.ids:
                 return item
             return Items.ids[item]
-        else:
-            for id_ in Items.ids:
-                if Items.ids[id_] == item:
-                    return id_
-            return item
+        for id_ in Items.ids:
+            if Items.ids[id_] == item:
+                return id_
+        return item
 
     @staticmethod
     def getMinionSlots(crafted: list) -> int:
@@ -287,7 +286,6 @@ class SkyBlock:
             if rexp >= level:
                 rexp -= level
                 lvl += 1
-                pass
             elif rexp < level:
                 break
         return lvl
@@ -338,7 +336,6 @@ class SkyBlock:
             if rexp >= level:
                 rexp -= level
                 lvl += 1
-                pass
             elif rexp < level:
                 break
         return lvl
@@ -547,7 +544,6 @@ class SkyBlock:
                     for level in req_xp:
                         if amount >= level:
                             lvl += 1
-                            pass
                         elif amount < level:
                             next_lvl = level
                             break
@@ -704,7 +700,6 @@ class SkyBlock:
                     for level in req_xp:
                         if amount >= level:
                             lvl += 1
-                            pass
                         elif amount < level:
                             next_lvl = level
                             break
@@ -804,7 +799,6 @@ class SkyBlock:
                     for level in req_xp:
                         if amount >= level:
                             lvl += 1
-                            pass
                         elif amount < level:
                             next_lvl = level
                             break
@@ -909,7 +903,6 @@ class SkyBlock:
                     for level in req_xp:
                         if amount >= level:
                             lvl += 1
-                            pass
                         elif amount < level:
                             next_lvl = level
                             break
@@ -1048,7 +1041,6 @@ class SkyBlock:
                     for level in req_xp:
                         if amount >= level:
                             lvl += 1
-                            pass
                         elif amount < level:
                             next_lvl = level
                             break

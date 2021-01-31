@@ -30,11 +30,9 @@ from contextlib import suppress
 
 class GuildMember(object):
     r"""Represents a Hypixel guild member.
-    
-    Parameters
-    -----------
-    memberdata: :class:`dict`
-        A dict containing the member's data."""
+
+    :param memberdata: A dict containing the member's data.
+    :type memberdata: dict"""
 
     def __init__(self, memberdata):
         with suppress(KeyError):
@@ -47,3 +45,11 @@ class GuildMember(object):
             self.quest_participation = memberdata['questParticipation']
         with suppress(KeyError):
             self.xp_history = memberdata['expHistory']
+
+    def __eq__(self, other):
+        try:
+            if other.uuid == self.uuid:
+                return True
+        except AttributeError:
+            pass
+        return False

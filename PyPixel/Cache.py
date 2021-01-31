@@ -31,13 +31,9 @@ import asyncio
 class Cache(Thread):
     r"""A class used for caching data returned from the api
 
-        
-    Parameters
-    -----------
-    clear_cache_after: :class:`int`
-        How often the cache should be cleared in seconds.
+    :param clear_cache_after: How often the cache should be cleared in seconds.
+    :type clear_cache_after: class:`int`
     """
-
     def __init__(self, clear_cache_after: int):
         super().__init__()
         self.cached = {}
@@ -48,7 +44,7 @@ class Cache(Thread):
     def run(self):
         r"""Runs a loop that refreshes the cache every so often.
 
-        This is not meant to be called manually."""
+        This is not meant to be called manually, and is invoked when the class is initialized."""
         loop = asyncio.new_event_loop()
         while True:
             loop.run_until_complete(asyncio.sleep(self.cachedelay))
@@ -64,11 +60,9 @@ class Cache(Thread):
         r"""|coro|
         
         Gets the cached url from the cache.
-        
-        Returns
-        -------
-        :class:`Optional[dict]`
-            The cached response. Can also be `None` if the response is not cached."""
+
+        :return: The cached response. Can also be `None` if the response is not cached.
+        :rtype: Optional[dict]"""
         if url in self.cached:
             return self.cached[url]
         return None
@@ -76,5 +70,11 @@ class Cache(Thread):
     async def cache(self, url: str, data: dict):
         r"""|coro|
         
-        Caches a response."""
+        Caches a response.
+
+        :param url: The URL the request was sent to.
+        :type url: str
+
+        :param data: The response as a dict.
+        :type data: dict"""
         self.cached[url] = data
