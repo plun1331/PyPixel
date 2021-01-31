@@ -425,7 +425,8 @@ class SkyBlockObjective(object):
         self.status = objective_data['status']
         self.progress = objective_data['progress']
         self.completed_at = datetime.datetime.fromtimestamp(
-            objective_data['completed_at'] / 1000) if objective_data['completed_at'] != 0 else None
+            objective_data['completed_at'] / 1000
+        ) if objective_data['completed_at'] != 0 else None
 
 
 class SkyBlockQuest(object):
@@ -440,8 +441,12 @@ class SkyBlockQuest(object):
     def __init__(self, quest_name: str, quest_data: dict):
         self.name = quest_name
         self.status = quest_data['status']
-        self.activated_at = datetime.datetime.fromtimestamp(quest_data['activated_at'] / 1000)
-        self.completed_at = datetime.datetime.fromtimestamp(quest_data['completed_at'] / 1000)
+        self.activated_at = datetime.datetime.fromtimestamp(
+            quest_data['activated_at'] / 1000
+        )
+        self.completed_at = datetime.datetime.fromtimestamp(
+            quest_data['completed_at'] / 1000
+        )
 
 
 class SkyBlockSlayer(object):
@@ -474,3 +479,17 @@ class SkyBlockPet(object):
         self.held_item = pet_data['heldItem']
         self.candy_used = pet_data['candyUsed']
         self.skin = pet_data['skin']
+
+
+class SkyBlockSkill(object):
+    r"""Represents a SkyBlock skill.
+
+    :param name: The skill's name.
+    :type name: str
+
+    :param skill_data: The skill's data.
+    :type skill_data: dict"""
+    def __init__(self, name, skill_data):
+        self.name = name
+        self.level = skill_data['level']
+        self.xp = skill_data['xp']
