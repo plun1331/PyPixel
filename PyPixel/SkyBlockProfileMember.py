@@ -118,31 +118,15 @@ class ProfileMember(object):
             memberdata['experience_skill_runecrafting']),
             "xp": memberdata['experience_skill_runecrafting']
         } if 'experience_skill_runecrafting' in memberdata else None
-        skills = []
-        skills.append(SkyBlockUtils.getSkillLevel(
-            memberdata['experience_skill_combat'])
-        ) if 'experience_skill_combat' in memberdata else None
-        skills.append(SkyBlockUtils.getSkillLevel(
-            memberdata['experience_skill_mining'])
-        ) if 'experience_skill_mining' in memberdata else None
-        skills.append(SkyBlockUtils.getSkillLevel(
-            memberdata['experience_skill_alchemy'])
-        ) if 'experience_skill_alchemy' in memberdata else None
-        skills.append(SkyBlockUtils.getSkillLevel(
-            memberdata['experience_skill_farming'])
-        ) if 'experience_skill_farming' in memberdata else None
-        skills.append(SkyBlockUtils.getSkillLevel(
-            memberdata['experience_skill_taming'])
-        ) if 'experience_skill_taming' in memberdata else None
-        skills.append(SkyBlockUtils.getSkillLevel(
-            memberdata['experience_skill_enchanting'])
-        ) if 'experience_skill_enchanting' in memberdata else None
-        skills.append(SkyBlockUtils.getSkillLevel(
-            memberdata['experience_skill_fishing']
-        )) if 'experience_skill_fishing' in memberdata else None
-        skills.append(SkyBlockUtils.getSkillLevel(
-            memberdata['experience_skill_foraging'])
-        ) if 'experience_skill_foraging' in memberdata else None
+        skills = [self.combat_skill,
+                  self.mining_skill,
+                  self.alchemy_skill,
+                  self.farming_skill,
+                  self.taming_skill,
+                  self.enchanting_skill,
+                  self.fishing_skill,
+                  self.foraging_skill]
+        skills = [skill['level'] for skill in skills if skill is not None]
         self.skill_average = sum(skills) / len(skills)
         self.fishing_bag = HypixelUtils.parseNBT(memberdata[
                                                      'fishing_bag']['data']) if 'fishing_bag' in memberdata else None
