@@ -52,6 +52,16 @@ Getting a Player's SkyBlock Profiles
     loop = asyncio.get_event_loop()
     loop.run_until_complete(main())
 
+Using ``PyPixel.utils``
+************************
+.. code:: py
+
+    # import the utils module
+    import PyPixel.utils
+
+    # print out the level you get for 777 xp
+    print(PyPixel.utils.HypixelUtils.playerLevel(777))
+
 Adding Examples
 ****************
 If you wish to add another example, just make a pull request, I really don't mind.

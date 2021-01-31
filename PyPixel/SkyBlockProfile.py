@@ -48,12 +48,11 @@ class SkyBlockProfile(object):
         self.members = []
         for member in profiledata['members']:
             self.members.append(ProfileMember(member, profiledata['members'][member], self._hypixel))
-        with suppress(KeyError):
-            self.community_upgrades = profiledata['community_upgrades']
-        with suppress(KeyError):
-            self.bank_balance = profiledata['banking']['balance']
-        with suppress(KeyError):
-            self.bank_transactions = profiledata['banking']['transactions']
+        self.community_upgrades = profiledata['community_upgrades'] if 'community_upgrades' in profiledata else None
+        self.bank_balance = profiledata['banking']['balance']
+        self.bank_transactions = profiledata[
+            'banking'][
+            'transactions'] if 'banking' in profiledata and 'transactions' in profiledata['banking'] else None
 
     def __eq__(self, other):
         if isinstance(other, SkyBlockProfile):

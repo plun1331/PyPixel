@@ -35,4 +35,4 @@ class PlayerStats(object):
 
     def __init__(self, data: dict):
         stats = data['stats']
-        self.skywars = SkyWarsStats(stats)
+        self.skywars = SkyWarsStats(stats) if 'SkyWars' in stats else None

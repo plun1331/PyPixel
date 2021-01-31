@@ -25,7 +25,6 @@ SOFTWARE.
 """
 
 import datetime
-from contextlib import suppress
 
 
 class GuildMember(object):
@@ -35,16 +34,11 @@ class GuildMember(object):
     :type memberdata: dict"""
 
     def __init__(self, memberdata):
-        with suppress(KeyError):
-            self.uuid = memberdata['uuid']
-        with suppress(KeyError):
-            self.rank = memberdata['rank']
-        with suppress(KeyError):
-            self.joined = datetime.datetime.fromtimestamp(memberdata['joined'] / 1000.0)
-        with suppress(KeyError):
-            self.quest_participation = memberdata['questParticipation']
-        with suppress(KeyError):
-            self.xp_history = memberdata['expHistory']
+        self.uuid = memberdata['uuid'] if 'rank' in memberdata else None
+        self.rank = memberdata['rank'] if 'rank' in memberdata else None
+        self.joined = datetime.datetime.fromtimestamp(memberdata['joined'] / 1000.0) if 'joined' in memberdata else None
+        self.quest_participation = memberdata['questParticipation'] if 'questParticipation' in memberdata else None
+        self.xp_history = memberdata['expHistory'] if 'expHistory' in memberdata else None
 
     def __eq__(self, other):
         try:

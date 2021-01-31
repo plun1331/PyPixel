@@ -25,7 +25,6 @@ SOFTWARE.
 """
 
 import datetime
-from contextlib import suppress
 
 
 class GuildRank(object):
@@ -35,16 +34,12 @@ class GuildRank(object):
     :type rankdata: dict"""
 
     def __init__(self, rankdata):
-        with suppress(KeyError):
-            self.name = rankdata['name']
-        with suppress(KeyError):
-            self.default = rankdata['default']
-        with suppress(KeyError):
-            self.tag = rankdata['tag']
-        with suppress(KeyError):
-            self.created = datetime.datetime.fromtimestamp(rankdata['created'] / 1000)
-        with suppress(KeyError):
-            self.priority = rankdata['priority']
+        self.name = rankdata['name'] if 'name' in rankdata else None
+        self.default = rankdata['default'] if 'default' in rankdata else None
+        self.tag = rankdata['tag'] if 'tag' in rankdata else None
+        self.created = datetime.datetime.fromtimestamp(rankdata[
+                                                           'created'] / 1000) if 'created' in rankdata else None
+        self.priority = rankdata['priority'] if 'priority' in rankdata else None
 
     def __eq__(self, other):
         try:

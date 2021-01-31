@@ -24,7 +24,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from contextlib import suppress
 import datetime
 from .GuildMember import GuildMember
 from .GuildRank import GuildRank
@@ -47,43 +46,25 @@ class Guild(object):
         guilddata = data['guild']
         self._hypixel = hypixel  # This is done so I can call functions from the Hypixel class
         self.cached = cached
-        with suppress(KeyError):
-            self.raw = guilddata
-        with suppress(KeyError):
-            self.name = guilddata['name']
-        with suppress(KeyError):
-            self.id = guilddata['_id']
-        with suppress(KeyError):
-            self.coins = guilddata['coins']
-        with suppress(KeyError):
-            self.created = datetime.datetime.fromtimestamp(guilddata['created'] / 1000)
-        self.members = [GuildMember(member) for member in guilddata['members']]
-        with suppress(KeyError):
-            self.joinable = guilddata['joinable']
-        with suppress(KeyError):
-            self.public = guilddata['publiclyListed']
-        with suppress(KeyError):
-            self.tag = guilddata['tag']
-        with suppress(KeyError):
-            self.legacy_ranking = guilddata['legacyRanking']
-        with suppress(KeyError):
-            self.achievements = guilddata['achievements']
-        with suppress(KeyError):
-            self.ranks = [GuildRank(rank) for rank in guilddata['ranks']]
-        with suppress(KeyError):
-            self.preferred_games = guilddata['preferredGames']
-        with suppress(KeyError):
-            self.description = guilddata['description']
-        with suppress(KeyError):
-            self.tag_color = guilddata['tagColor']
-        with suppress(KeyError):
-            self.chat_muted_since = guilddata['chatMute']
-        with suppress(KeyError):
-            self.level = HypixelUtils.guildlevel(guilddata['exp'])
-        with suppress(KeyError):
-            self.xp = guilddata['exp']
-        with suppress(KeyError):
-            self.guild_xp_by_game = guilddata['guildExpByGameType']
+        self.raw = guilddata
+        self.name = guilddata['name'] if 'name' in guilddata else None
+        self.id = guilddata['_id'] if '_id' in guilddata else None
+        self.coins = guilddata['coins'] if 'coins' in guilddata else None
+        self.created = datetime.datetime.fromtimestamp(guilddata['created'] / 1000) if 'created' in guilddata else None
+        self.members = [GuildMember(member) for member in guilddata['members']] if 'members' in guilddata else None
+        self.joinable = guilddata['joinable'] if 'joinable' in guilddata else None
+        self.public = guilddata['publiclyListed'] if 'publiclyListed' in guilddata else None
+        self.tag = guilddata['tag'] if 'tag' in guilddata else None
+        self.legacy_ranking = guilddata['legacyRanking'] if 'legacyRanking' in guilddata else None
+        self.achievements = guilddata['achievements'] if 'achievements' in guilddata else None
+        self.ranks = [GuildRank(rank) for rank in guilddata['ranks']] if 'ranks' in guilddata else None
+        self.preferred_games = guilddata['preferredGames'] if 'preferredGames' in guilddata else None
+        self.description = guilddata['description'] if 'description' in guilddata else None
+        self.tag_color = guilddata['tagColor'] if 'tagColor' in guilddata else None
+        self.chat_muted_since = guilddata['chatMute'] if 'chatMute' in guilddata else None
+        self.level = HypixelUtils.guildlevel(guilddata['exp']) if 'exp' in guilddata else None
+        self.xp = guilddata['exp'] if 'exp' in guilddata else None
+        self.guild_xp_by_game = guilddata['guildExpByGameType'] if 'guildExpByGameType' in guilddata else None
 
     def __str__(self):
         return self.name

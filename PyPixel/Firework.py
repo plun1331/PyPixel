@@ -32,10 +32,10 @@ class Firework(object):
     :type firework: dict"""
 
     def __init__(self, firework: dict):
-        self.flight_duration = firework['flight_duaration']
-        self.shape = firework['shape']
-        self.trail_enabled = firework['trail']
-        self.twinkles = firework['twinkle']
-        self.colors = firework['colors']
-        self.fading_colors = firework['fade_colors']
-        self.selected = firework['selected']
+        self.flight_duration = firework['flight_duaration'] if 'flight_duaration' in firework else None
+        self.shape = firework['shape'] if 'shape' in firework else None
+        self.trail_enabled = firework['trail'] if 'trail' in firework else None
+        self.twinkles = firework['twinkle'] if 'twinkle' in firework else None
+        self.colors = firework['colors'] if 'colors' in firework else None
+        self.fading_colors = firework['fade_colors'] if 'fade_colors' in firework else None
+        self.selected = firework['selected'] if 'selected' in firework else None

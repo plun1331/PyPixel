@@ -1,9 +1,13 @@
 # PyPixel
 
-[![Discord Server Invite](https://discord.com/api/guilds/766123673425281025/embed.png)](https://discord.gg/k6fgvUn3aF)
-[![PyPI version info](https://img.shields.io/pypi/v/pypixel-api.svg)](https://pypi.python.org/pypi/pypixel-api)
-[![PyPI supported Python versions](https://img.shields.io/pypi/pyversions/pypixel-api.svg)](https://pypi.python.org/pypi/pypixel-api)
-[![Documentation Status](https://readthedocs.org/projects/pypixel/badge/?version=latest)](https://pypixel.readthedocs.io/en/latest/)
+[![Discord Server Invite](https://discord.com/api/guilds/766123673425281025/embed.png)](
+https://discord.gg/k6fgvUn3aF)
+[![PyPI version info](https://img.shields.io/pypi/v/pypixel-api.svg)](
+https://pypi.python.org/pypi/pypixel-api)
+[![PyPI supported Python versions](https://img.shields.io/pypi/pyversions/pypixel-api.svg)](
+https://pypi.python.org/pypi/pypixel-api)
+[![Documentation Status](https://readthedocs.org/projects/pypixel/badge/?version=latest)](
+https://pypixel.readthedocs.io/en/latest/)
 
 An asynchronous wrapper for the Hypixel API.
 
@@ -36,6 +40,9 @@ py -3 -m pip install -U git+https://github.com/plun1331/PyPixel
 You can find some examples [in our documentation](https://pypixel.readthedocs.io/en/latest/examples.html)
 
 # Changelog
+## 0.1.8a
+- The module will now return `None` instead of having the value simply be missing.
+
 ## 0.1.7
 - Added documentation: [pypixel.readthedocs.io](https://pypixel.readthedocs.io/en/latest/)
 

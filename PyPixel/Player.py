@@ -26,7 +26,6 @@ SOFTWARE.
 
 from .Firework import Firework
 import datetime
-from contextlib import suppress
 from .PlayerStats import PlayerStats
 from .utils import HypixelUtils
 from .Errors import GuildNotFound
@@ -48,70 +47,44 @@ class Player(object):
         playerdata = data['player']
         self.raw = playerdata
         self._hypixel = hypixel  # This is done so I can call functions from the Hypixel class
-        with suppress(KeyError):
-            self.uuid = playerdata['uuid']
-        with suppress(KeyError):
-            self.achievements = playerdata['achievements']
-        with suppress(KeyError):
-            self.one_time_achievements = playerdata['achievementsOneTime']
-        with suppress(KeyError):
-            self.auto_spawning_pet = playerdata['auto_spawn_pet']
-        with suppress(KeyError):
-            self.current_chat_channel = playerdata['channel']
-        with suppress(KeyError):
-            self.display_name = playerdata['displayname']
-        with suppress(KeyError):
-            self.fireworks = [Firework(firework) for firework in playerdata['fireworkStorage']]
-        with suppress(KeyError):
-            self.firstLogin = datetime.datetime.fromtimestamp(playerdata['firstLogin'] / 1000.0)
-        with suppress(KeyError):
-            self.karma = playerdata['karma']
-        with suppress(KeyError):
-            self.aliases = playerdata['knownAliases']
-        with suppress(KeyError):
-            self.lastLogin = datetime.datetime.fromtimestamp(playerdata['lastLogin'] / 1000.0)
-        with suppress(KeyError):
-            self.most_recently_thanked = playerdata['mostRecentlyThankedUuid']
-        with suppress(KeyError):
-            self.most_recently_tipped = playerdata['mostRecentlyTippedUuid']
-        with suppress(KeyError):
-            self.experience = playerdata['networkExp']
-        with suppress(KeyError):
-            self.level = HypixelUtils.playerLevel(playerdata['networkExp'])
-        with suppress(KeyError):
-            self.name = playerdata['playername']
-        with suppress(KeyError):
-            self.settings = playerdata['settings']
-        with suppress(KeyError):
-            self.spectators_hidden = playerdata['spectators_invisible']
-        with suppress(KeyError):
-            self.stats = PlayerStats(playerdata)
-        with suppress(KeyError):
-            self.recieved_thanks = playerdata['thanksReceived']
-        with suppress(KeyError):
-            self.thanks_sent = playerdata['thanksSent']
-        with suppress(KeyError):
-            self.version = playerdata['mcVersionRp']
-        with suppress(KeyError):
-            self.rank_plus = playerdata['rankPlusColor']
-        with suppress(KeyError):
-            self.last_logout = datetime.datetime.fromtimestamp(playerdata['lastLogout'] / 1000)
-        with suppress(KeyError):
-            self.cloak = playerdata['currentCloak']
-        with suppress(KeyError):
-            self.achievement_points = playerdata['achievementPoints']
-        with suppress(KeyError):
-            self.click_effect = playerdata['currentClickEffect']
-        with suppress(KeyError):
-            self.current_pet = playerdata['currentPet']
-        with suppress(KeyError):
-            self.social_media = playerdata['socialMedia']['links']
-        with suppress(KeyError):
-            self.recently_played = playerdata['mostRecentGameType']
-        with suppress(KeyError):
-            self.rank = HypixelUtils.getRank(playerdata)
-        with suppress(KeyError):
-            self.cached = cached
+        self.stats = PlayerStats(playerdata)
+        self.uuid = playerdata['uuid'] if 'uuid' in playerdata else None
+        self.achievements = playerdata['achievements'] if 'achievements' in playerdata else None
+        self.one_time_achievements = playerdata['achievementsOneTime'] if 'achievementsOneTime' in playerdata else None
+        self.auto_spawning_pet = playerdata['auto_spawn_pet'] if 'auto_spawn_pet' in playerdata else None
+        self.current_chat_channel = playerdata['channel'] if 'channel' in playerdata else None
+        self.display_name = playerdata['displayname'] if 'displayname' in playerdata else None
+        self.fireworks = [Firework(firework) for firework in
+                          playerdata['fireworkStorage']] if 'fireworkStorage' in playerdata else None
+        self.firstLogin = datetime.datetime.fromtimestamp(
+            playerdata['firstLogin'] / 1000.0) if 'firstLogin' in playerdata else None
+        self.karma = playerdata['karma'] if 'karma' in playerdata else None
+        self.aliases = playerdata['knownAliases'] if 'knownAliases' in playerdata else None
+        self.lastLogin = datetime.datetime.fromtimestamp(
+            playerdata['lastLogin'] / 1000.0) if 'lastLogin' in playerdata else None
+        self.most_recently_thanked = playerdata[
+            'mostRecentlyThankedUuid'] if 'mostRecentlyThankedUuid' in playerdata else None
+        self.most_recently_tipped = playerdata[
+            'mostRecentlyTippedUuid'] if 'mostRecentlyTippedUuid' in playerdata else None
+        self.experience = playerdata['networkExp'] if 'networkExp' in playerdata else None
+        self.level = HypixelUtils.playerLevel(playerdata['networkExp']) if 'networkExp' in playerdata else None
+        self.name = playerdata['playername'] if 'playername' in playerdata else None
+        self.settings = playerdata['settings'] if 'settings' in playerdata else None
+        self.spectators_hidden = playerdata['spectators_invisible'] if 'spectators_invisible' in playerdata else None
+        self.recieved_thanks = playerdata['thanksReceived'] if 'thanksReceived' in playerdata else None
+        self.thanks_sent = playerdata['thanksSent'] if 'thanksSent' in playerdata else None
+        self.version = playerdata['mcVersionRp'] if 'mcVersionRp' in playerdata else None
+        self.rank_plus = playerdata['rankPlusColor'] if 'rankPlusColor' in playerdata else None
+        self.last_logout = datetime.datetime.fromtimestamp(
+            playerdata['lastLogout'] / 1000) if 'lastLogout' in playerdata else None
+        self.cloak = playerdata['currentCloak'] if 'currentCloak' in playerdata else None
+        self.achievement_points = playerdata['achievementPoints'] if 'achievementPoints' in playerdata else None
+        self.click_effect = playerdata['currentClickEffect'] if 'currentClickEffect' in playerdata else None
+        self.current_pet = playerdata['currentPet'] if 'currentPet' in playerdata else None
+        self.social_media = playerdata['socialMedia']['links'] if 'socialMedia' in playerdata else None
+        self.recently_played = playerdata['mostRecentGameType'] if 'mostRecentGameType' in playerdata else None
+        self.rank = HypixelUtils.getRank(playerdata)
+        self.cached = cached
 
     def __eq__(self, other):
         try:
