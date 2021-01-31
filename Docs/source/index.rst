@@ -24,6 +24,7 @@ An asynchronous wrapper for the Hypixel API.
    tutorial
    examples
    api
+   faq
    utils/index
 
 Getting Started
