@@ -3,7 +3,7 @@
 [![Discord Server Invite](https://discord.com/api/guilds/766123673425281025/embed.png)](https://discord.gg/k6fgvUn3aF)
 [![PyPI version info](https://img.shields.io/pypi/v/pypixel-api.svg)](https://pypi.python.org/pypi/pypixel-api)
 [![PyPI supported Python versions](https://img.shields.io/pypi/pyversions/pypixel-api.svg)](https://pypi.python.org/pypi/pypixel-api)
-[![Documentation Status](https://readthedocs.org/projects/pypixel/badge/?version=latest)](https://pypixel.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/pypixel/badge/?version=latest)](https://pypixel.readthedocs.io/en/latest/)
 
 An asynchronous wrapper for the Hypixel API.
 
@@ -37,7 +37,7 @@ You can find some examples [in our documentation](https://pypixel.readthedocs.io
 
 # Changelog
 ## 0.1.7
-- Added documentation: [pypixel.readthedocs.io](https://pypixel.readthedocs.io/en/latest/examples.html)
+- Added documentation: [pypixel.readthedocs.io](https://pypixel.readthedocs.io/en/latest/)
 
 ## 0.1.6
 - Add some methods
