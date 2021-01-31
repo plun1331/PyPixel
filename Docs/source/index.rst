@@ -26,7 +26,6 @@ An asynchronous wrapper for the Hypixel API.
    api
    utils/index
 
-
 Getting Started
 ================
 Is this your first time using PyPixel? This is the place to get started!
