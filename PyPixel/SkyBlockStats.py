@@ -34,10 +34,13 @@ types = {'zombie': SkyBlock.zombieSlayer,
 
 
 class SkyBlockStats(object):
-    r"""Represents a player's SkyBlock Statistics."""
+    r"""Represents a player's SkyBlock Statistics.
+
+    :param stats: The player's stats from their memberdata retrieved from the API.
+    :type stats: dict"""
 
     # TODO: REFORMAT TO `self.stat = stats['stat_api_name'] if 'stat_api_name' in stats else None`
-    def __init__(self, stats):
+    def __init__(self, stats: dict):
         with suppress(KeyError):
             self.top_crit_damage = stats['highest_crit_damage']
         with suppress(KeyError):
@@ -582,7 +585,13 @@ class SkyBlockStats(object):
 
 
 class SkyBlockObjective(object):
-    r""" Represents a SkyBlock Objective """
+    r"""Represents a SkyBlock Objective.
+
+    :param objective_name: The name of the objective.
+    :type objective_name: str
+
+    :param objective_data: The objective's data.
+    :type objective_data: dict"""
 
     def __init__(self, objective_name: str, objective_data: dict):
         self.name = objective_name
@@ -593,9 +602,15 @@ class SkyBlockObjective(object):
 
 
 class SkyBlockQuest(object):
-    r""" Represents a SkyBlock Quest """
+    r"""Represents a SkyBlock quest.
 
-    def __init__(self, quest_name, quest_data):
+    :param quest_name: The name of the quest.
+    :type quest_name: str
+
+    :param quest_data: The quest's data.
+    :type quest_data: dict"""
+
+    def __init__(self, quest_name: str, quest_data: dict):
         self.name = quest_name
         self.status = quest_data['status']
         self.activated_at = datetime.datetime.fromtimestamp(quest_data['activated_at'] / 1000)
@@ -603,9 +618,15 @@ class SkyBlockQuest(object):
 
 
 class SkyBlockSlayer(object):
-    r""" Represents a SkyBlock Slayer """
+    r"""Represents a SkyBlock slayer.
 
-    def __init__(self, slayer, slayer_data):
+    :param slayer: The name of the slayer.
+    :type slayer: str
+
+    :param slayer_data: The slayer's data.
+    :type slayer_data: dict"""
+
+    def __init__(self, slayer: str, slayer_data: dict):
         self.slayer = slayer
         self.claimed_levels = slayer_data['claimed_levels']
         self.xp = slayer_data['xp']
@@ -613,9 +634,11 @@ class SkyBlockSlayer(object):
 
 
 class SkyBlockPet(object):
-    r""" Represents a SkyBlock Pet """
+    r"""Represents a SkyBlock pet.
 
-    def __init__(self, pet_data):
+    :param pet_data: The pet's data.
+    :type pet_data: dict"""
+    def __init__(self, pet_data: dict):
         self.uuid = pet_data['uuid']
         self.type = pet_data['type']
         self.xp = pet_data['exp']

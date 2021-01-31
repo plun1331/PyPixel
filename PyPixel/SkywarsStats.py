@@ -31,10 +31,8 @@ from contextlib import suppress
 class SkyWarsStats(object):
     r"""Base class for a player's SkyWars stats.
     
-    Parameters
-    -----------
-    playerstats: :class:`dict`
-        The raw player stats data from the API."""
+    :param playerstats: The raw player stats data from the API.
+    :type playerstats: dict"""
 
     def __init__(self, playerstats: dict):
         stats = playerstats['SkyWars']
@@ -52,12 +50,10 @@ class SkyWarsStats(object):
             self.level = Hypixel.skywarsLevel(stats['skywars_experience'])
 
     class Overall(object):
-        r"""A player's overall SkyWars stats.
+        r"""The player's overall SkyWars stats.
     
-        Parameters
-        -----------
-        stats: :class:`dict`
-            The raw SkyWars stats data from the API."""
+        :param stats: The raw SkyWars stats data from the API.
+        :type stats: dict"""
 
         def __init__(self, stats: dict):
             with suppress(KeyError):
@@ -134,12 +130,10 @@ class SkyWarsStats(object):
                 self.bow_kills = stats['bow_kills']
 
     class Solo(object):
-        r"""A player's solo SkyWars stats.
+        r"""The player's solo SkyWars stats.
     
-        Parameters
-        -----------
-        stats: :class:`dict`
-            The raw SkyWars stats data from the API."""
+        :param stats: The raw SkyWars stats data from the API.
+        :type stats: dict"""
 
         def __init__(self, stats: dict):
             self.normal = self.Normal(stats)
@@ -188,12 +182,10 @@ class SkyWarsStats(object):
                 self.longest_bow_kill = stats['longest_bow_kill_solo']
 
         class Normal(object):
-            r"""A player's solo normal SkyWars stats.
+            r"""The player's solo normal SkyWars stats.
     
-            Parameters
-            -----------
-            stats: :class:`dict`
-                The raw SkyWars stats data from the API."""
+            :param stats: The raw SkyWars stats data from the API.
+            :type stats: dict"""
 
             def __init__(self, stats: dict):
                 with suppress(KeyError):
@@ -206,12 +198,10 @@ class SkyWarsStats(object):
                     self.wins = stats['wins_solo_normal']
 
         class Insane(object):
-            r"""A player's solo insane SkyWars stats.
+            r"""The player's solo insane SkyWars stats.
     
-            Parameters
-            -----------
-            stats: :class:`dict`
-                The raw SkyWars stats data from the API."""
+            :param stats: The raw SkyWars stats data from the API.
+            :type stats: dict"""
 
             def __init__(self, stats: dict):
                 with suppress(KeyError):
@@ -224,12 +214,10 @@ class SkyWarsStats(object):
                     self.wins = stats['wins_solo_insane']
 
     class Teams(object):
-        r"""A player's teams SkyWars stats.
+        r"""The player's teams SkyWars stats.
     
-        Parameters
-        -----------
-        stats: :class:`dict`
-            The raw SkyWars stats data from the API."""
+        :param stats: The raw SkyWars stats data from the API.
+        :type stats: dict"""
 
         def __init__(self, stats: dict):
             self.normal = self.Normal(stats)
@@ -278,12 +266,10 @@ class SkyWarsStats(object):
                 self.bow_kills = stats['bow_kills_team']
 
         class Normal(object):
-            r"""A player's teams normal SkyWars stats.
+            r"""The player's teams normal SkyWars stats.
     
-            Parameters
-            -----------
-            stats: :class:`dict`
-                The raw SkyWars stats data from the API."""
+            :param stats: The raw SkyWars stats data from the API.
+            :type stats: dict"""
 
             def __init__(self, stats):
                 with suppress(KeyError):
@@ -296,12 +282,10 @@ class SkyWarsStats(object):
                     self.wins = stats['wins_team_normal']
 
         class Insane(object):
-            r"""A player's teams insane SkyWars stats.
+            r"""The player's teams insane SkyWars stats.
     
-            Parameters
-            -----------
-            stats: :class:`dict`
-                The raw SkyWars stats data from the API."""
+            :param stats: The raw SkyWars stats data from the API.
+            :type stats: dict"""
 
             def __init__(self, stats):
                 with suppress(KeyError):
@@ -314,12 +298,10 @@ class SkyWarsStats(object):
                     self.wins = stats['wins_team_insane']
 
     class Mega(object):
-        r"""A player's mega SkyWars stats.
+        r"""The player's mega SkyWars stats.
     
-        Parameters
-        -----------
-        stats: :class:`dict`
-            The raw SkyWars stats data from the API."""
+        :param stats: The raw SkyWars stats data from the API.
+        :type stats: dict"""
 
         def __init__(self, stats):
             with suppress(KeyError):
@@ -362,12 +344,10 @@ class SkyWarsStats(object):
                 self.mob_kills = stats['mob_kills_mega']
 
     class Ranked(object):
-        r"""A player's ranked SkyWars stats.
+        r"""The player's ranked SkyWars stats.
     
-        Parameters
-        -----------
-        stats: :class:`dict`
-            The raw SkyWars stats data from the API."""
+        :param stats: The raw SkyWars stats data from the API.
+        :type stats: dict"""
 
         def __init__(self, stats):
             with suppress(KeyError):
@@ -408,12 +388,10 @@ class SkyWarsStats(object):
                 self.bow_kills = stats['bow_kills_ranked']
 
     class Lab(object):
-        r"""A player's laboratory SkyWars stats.
+        r"""The player's laboratory SkyWars stats.
     
-        Parameters
-        -----------
-        stats: :class:`dict`
-            The raw SkyWars stats data from the API."""
+        :param stats: The raw SkyWars stats data from the API.
+        :type stats: dict"""
 
         def __init__(self, stats: dict):
             self.solo = self.Solo(stats)
@@ -488,7 +466,10 @@ class SkyWarsStats(object):
                 self.rush_wins = stats['lab_win_rush_lab']
 
         class Solo(object):
-            r"""Represents SkyWars Solo stats."""
+            r"""The player's solo lab SkyWars stats.
+
+            :param stats: The raw SkyWars stats data from the API.
+            :type stats: dict"""
             def __init__(self, stats: dict):
                 with suppress(KeyError):
                     self.survived_players = stats['survived_players_lab_solo']
@@ -542,7 +523,10 @@ class SkyWarsStats(object):
                     self.rush_wins = stats['lab_win_rush_lab_solo']
 
         class Teams(object):
-            r"""Represents SkyWars Teams stats."""
+            r"""The player's teams lab SkyWars stats.
+
+            :param stats: The raw SkyWars stats data from the API.
+            :type stats: dict"""
             def __init__(self, stats: dict):
                 with suppress(KeyError):
                     self.survived_playes = stats['survived_players_lab_team']

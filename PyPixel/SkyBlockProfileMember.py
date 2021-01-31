@@ -31,7 +31,16 @@ from .SkyBlockStats import SkyBlockStats, SkyBlockObjective, SkyBlockQuest, SkyB
 
 
 class ProfileMember(object):
-    r"""Represents a member in a SkyBlock profile."""
+    r"""Represents a member in a SkyBlock profile.
+
+    :param uuid: The member's UUID.
+    :type uuid: str
+
+    :param memberdata: The member's data in the profile.
+    :type memberdata: dict
+
+    :param hypixel: The Hypixel class used to get the profile.
+    :type hypixel: PyPixel.Hypixel.Hypixel"""
 
     def __init__(self, uuid, memberdata, hypixel):
         self._hypixel = hypixel
@@ -172,13 +181,9 @@ class ProfileMember(object):
 
         Gets the member's player object.
 
-        Returns
-        --------
-        :class:`.Player`
-            The returned player.
+        :raises PyPixel.Errors.PlayerNotFound: The player couldn't be found for some reason.
 
-        Raises
-        --------
-        :class:`.PlayerNotFound`
-            The player couldn't be found for some reason."""
+        :return: The player from the API.
+        :rtype: PyPixel.Player.Player"""
+
         return self._hypixel.get_player(self.uuid)

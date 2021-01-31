@@ -31,23 +31,18 @@ from typing import Union, Literal
 
 
 class Hypixel:
-    """ General utilities relating to Hypixel. """
+    r"""General utilities relating to Hypixel."""
 
     @staticmethod
     def parseNBT(raw_data: Union[bytes, str]) -> NBTFile:
         r"""Parses NBT data from the API.
 
-        Parameters
-        ----------
-        raw_data: :class:`Union[bytes, str]`
-            The raw encoded NBT data.
+        :param raw_data: The raw encoded NBT data.
+        :type raw_data: Union[bytes, str]
 
-        Returns
-        -------
-        :class:`nbt.nbt.NBTFile`
-            The decoded NBT data.
+        :return: The decoded NBT data.
+        :rtype: nbt.nbt.NBTFile"""
 
-        """
         data = NBTFile(fileobj=io.BytesIO(base64.b64decode(raw_data)))
         return data
 
@@ -57,17 +52,12 @@ class Hypixel:
     ]:
         r"""Gets a player's rank from their raw API data.
 
-        Parameters
-        -----------
-        data: :class:`dict`
-            The player's raw API data.
+        :param data: The player's raw API data.
+        :type data: dict
 
+        :return: The player's rank.
+        :rtype: Literal['Default', 'VIP', 'VIP+', 'MVP', 'MVP+', 'MVP++', 'YouTube', 'Helper', 'Moderator', 'Admin']"""
 
-        Returns
-        --------
-        :class:`Literal['Default', 'VIP', 'VIP+', 'MVP', 'MVP+', 'MVP++', 'YouTube', 'Helper', 'Moderator', 'Admin']`
-            The player's rank.
-        """
         if "rank" in data and data["rank"] != "NORMAL":
             rank = data["rank"]
         elif "monthlyPackageRank" in data:
@@ -99,17 +89,12 @@ class Hypixel:
     def guildlevel(xp: float):
         r"""Gets a guild's level from the guild's xp.
 
-        Parameters
-        -----------
-        xp: :class:`float`
-            The guild's XP.
+        :param xp: The guild's XP.
+        :type xp: float
 
+        :return: The guild's level.
+        :rtype: int"""
 
-        Returns
-        --------
-        :class:`int`
-            The guild's level.
-        """
         req_exp = [100000,
                    150000,
                    250000,
@@ -134,25 +119,20 @@ class Hypixel:
             xp -= needed
             if xp < 0:
                 return int(lvl)
-            else:
-                lvl += 1
+            lvl += 1
         return 0
 
     @staticmethod
     def playerLevel(xp) -> int:
         r"""Gets a player's network level from their network experience,
-        using the equation `(((2 * xp) + 30625) ** (1 / 2) / 50) - 2.5`.
+        using the equation ``(((2 * xp) + 30625) ^ (1 / 2) / 50) - 2.5``.
 
-        Parameters
-        -----------
-        xp: :class:`float`
-            The player's network experience.
+        :param xp: The player's network experience.
+        :type xp: float
 
-        Returns
-        --------
-        :class:`int`
-            The player's network level.
-        """
+        :return: The player's network level.
+        :rtype: int"""
+
         network_level = (((2 * xp) + 30625) ** (1 / 2) / 50) - 2.5
         level = round(network_level, 0)
         return int(level)
@@ -161,23 +141,19 @@ class Hypixel:
     def skywarsLevel(xp: float) -> int:
         r"""Gets a player's SkyWars level from their SkyWars experience.
 
-        Parameters
-        -----------
-        xp: :class:`float`
-            The player's SkyWars experience.
+        :param xp: The player's SkyWars experience.
+        :type xp: float
 
-        Returns
-        --------
-        :class:`int`
-            The player's SkyWars level.
-        """
+        :return: The player's SkyWars level.
+        :rtype: int"""
+
         level = 0
         xps = [0, 20, 70, 150, 250, 500, 1000, 2000, 3500, 6000, 10000, 15000]
         if xp >= 15000:
             level = (xp - 15000) / 10000. + 12
         else:
-            for i in range(len(xps)):
-                if xp < xps[i]:
+            for i, item in enumerate(xps):
+                if xp < item:
                     # noinspection PyTypeChecker
-                    level = int(round(int(1 + i + float(xp - xps[i - 1]) / (xps[i] - xps[i - 1], 0))))
+                    level = int(round(int(1 + i + float(xp - xps[i - 1]) / (item - xps[i - 1], 0))))
         return level

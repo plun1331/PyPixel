@@ -49,11 +49,10 @@ class SkyBlock:
             if item not in Items.ids:
                 return item
             return Items.ids[item]
-        else:
-            for id_ in Items.ids:
-                if Items.ids[id_] == item:
-                    return id_
-            return item
+        for id_ in Items.ids:
+            if Items.ids[id_] == item:
+                return id_
+        return item
 
     @staticmethod
     def getMinionSlots(crafted: list) -> int:
@@ -68,7 +67,6 @@ class SkyBlock:
         --------
         :class:`int`
             The player's crafted minion slots."""
-        slts = 5
         req_unique = [5,
                       15,
                       30,
@@ -93,12 +91,7 @@ class SkyBlock:
             if minion not in minions:
                 minions.append(minion)
         rexp = len(minions)
-        for level in req_unique:
-            if rexp >= level:
-                slts += 1
-            elif rexp < level:
-                break
-        slots = slts
+        slots = SkyBlock.getLevel(req_unique, rexp, subtract=False)+5
         return slots
 
     @staticmethod
@@ -123,12 +116,7 @@ class SkyBlock:
                   100000,
                   400000,
                   1000000]
-        lvl = 0
-        for level in req_xp:
-            if xp >= level:
-                lvl += 1
-            elif xp < level:
-                break
+        lvl = SkyBlock.getLevel(req_xp, xp, subtract=False)
         return lvl
 
     @staticmethod
@@ -153,12 +141,7 @@ class SkyBlock:
                   100000,
                   400000,
                   1000000]
-        lvl = 0
-        for level in req_xp:
-            if xp >= level:
-                lvl += 1
-            elif xp < level:
-                break
+        lvl = SkyBlock.getLevel(req_xp, xp, subtract=False)
         return lvl
 
     @staticmethod
@@ -183,12 +166,7 @@ class SkyBlock:
                   100000,
                   400000,
                   1000000]
-        lvl = 0
-        for level in req_xp:
-            if xp >= level:
-                lvl += 1
-            elif xp < level:
-                break
+        lvl = SkyBlock.getLevel(req_xp, xp, subtract=False)
         return lvl
 
     @staticmethod
@@ -281,15 +259,7 @@ class SkyBlock:
                        3400000,
                        3700000,
                        4000000]
-        lvl = 0
-        rexp = xp
-        for level in prog_req_xp:
-            if rexp >= level:
-                rexp -= level
-                lvl += 1
-                pass
-            elif rexp < level:
-                break
+        lvl = SkyBlock.getLevel(prog_req_xp, xp)
         return lvl
 
     @staticmethod
@@ -332,15 +302,7 @@ class SkyBlock:
                        9800,
                        12200,
                        15300]
-        lvl = 0
-        rexp = xp
-        for level in prog_req_xp:
-            if rexp >= level:
-                rexp -= level
-                lvl += 1
-                pass
-            elif rexp < level:
-                break
+        lvl = SkyBlock.getLevel(prog_req_xp, xp)
         return lvl
 
     @staticmethod
@@ -538,26 +500,7 @@ class SkyBlock:
                           100000]
             else:
                 req_xp = []
-            if len(req_xp) != 0:
-                col = SkyBlock.getItem(collection)
-                if collection in data['collection']:
-                    next_lvl = 0
-                    amount = data['collection'][collection]
-                    lvl = 0
-                    for level in req_xp:
-                        if amount >= level:
-                            lvl += 1
-                            pass
-                        elif amount < level:
-                            next_lvl = level
-                            break
-                    if lvl >= len(req_xp):
-                        c[col] = lvl
-                    else:
-                        progress = int(round(amount, 0))/next_lvl
-                        c[col] = lvl + progress
-                else:
-                    c[col] = 0
+            c = SkyBlock.getCollectionData(data, req_xp, collection, c)
         return c
 
     @staticmethod
@@ -695,27 +638,8 @@ class SkyBlock:
                           50000]
             else:
                 req_xp = []
-            if len(req_xp) != 0:
-                col = SkyBlock.getItem(collection)
-                if collection in data['collection']:
-                    next_lvl = 0
-                    amount = data['collection'][collection]
-                    lvl = 0
-                    for level in req_xp:
-                        if amount >= level:
-                            lvl += 1
-                            pass
-                        elif amount < level:
-                            next_lvl = level
-                            break
-                    if lvl >= len(req_xp):
-                        c[col] = lvl
-                    else:
-                        progress = int(round(amount, 0)) / next_lvl
-                        c[col] = lvl + progress
-                else:
-                    c[col] = 0
-            return c
+            c = SkyBlock.getCollectionData(data, req_xp, collection, c)
+        return c
 
     @staticmethod
     def combatCollection(data: dict) -> dict:
@@ -795,27 +719,8 @@ class SkyBlock:
                           50000]
             else:
                 req_xp = []
-            if len(req_xp) != 0:
-                col = SkyBlock.getItem(collection)
-                if collection in data['collection']:
-                    next_lvl = 0
-                    amount = data['collection'][collection]
-                    lvl = 0
-                    for level in req_xp:
-                        if amount >= level:
-                            lvl += 1
-                            pass
-                        elif amount < level:
-                            next_lvl = level
-                            break
-                    if lvl >= len(req_xp):
-                        c[col] = lvl
-                    else:
-                        progress = int(round(amount, 0)) / next_lvl
-                        c[col] = lvl + progress
-                else:
-                    c[col] = 0
-            return c
+            c = SkyBlock.getCollectionData(data, req_xp, collection, c)
+        return c
 
     @staticmethod
     def foragingCollection(data: dict) -> dict:
@@ -900,27 +805,8 @@ class SkyBlock:
                           25000]
             else:
                 req_xp = []
-            if len(req_xp) != 0:
-                col = SkyBlock.getItem(collection)
-                if collection in data['collection']:
-                    next_lvl = 0
-                    amount = data['collection'][collection]
-                    lvl = 0
-                    for level in req_xp:
-                        if amount >= level:
-                            lvl += 1
-                            pass
-                        elif amount < level:
-                            next_lvl = level
-                            break
-                    if lvl >= len(req_xp):
-                        c[col] = lvl
-                    else:
-                        progress = int(round(amount, 0)) / next_lvl
-                        c[col] = lvl + progress
-                else:
-                    c[col] = 0
-            return c
+            c = SkyBlock.getCollectionData(data, req_xp, collection, c)
+        return c
 
     @staticmethod
     def fishingCollection(data: dict):
@@ -1039,24 +925,69 @@ class SkyBlock:
                           4000]
             else:
                 req_xp = []
-            if len(req_xp) != 0:
-                col = SkyBlock.getItem(collection)
-                if collection in data['collection']:
-                    next_lvl = 0
-                    amount = data['collection'][collection]
-                    lvl = 0
-                    for level in req_xp:
-                        if amount >= level:
-                            lvl += 1
-                            pass
-                        elif amount < level:
-                            next_lvl = level
-                            break
-                    if lvl >= len(req_xp):
-                        c[col] = lvl
-                    else:
-                        progress = int(round(amount, 0)) / next_lvl
-                        c[col] = lvl + progress
+            c = SkyBlock.getCollectionData(data, req_xp, collection, c)
+        return c
+
+    @staticmethod
+    def getCollectionData(data, req_xp, collection, c):
+        """Modifies a collection's collection data.
+
+        :param data: The raw API data.
+        :type data: dict
+
+        :param req_xp: A list of the required XP.
+        :type req_xp: list
+
+        :param collection: The collection to modify the dict with.
+        :type collection: str
+
+        :param c: The dict to modify.
+        :type c: dict
+
+        :return: The modified dict.
+        :rtype: dict"""
+        if len(req_xp) != 0:
+            col = SkyBlock.getItem(collection)
+            if collection in data['collection']:
+                next_lvl = 0
+                amount = data['collection'][collection]
+                lvl = 0
+                for level in req_xp:
+                    if amount >= level:
+                        lvl += 1
+                    elif amount < level:
+                        next_lvl = level
+                        break
+                if lvl >= len(req_xp):
+                    c[col] = lvl
                 else:
-                    c[col] = 0
-            return c
+                    progress = int(round(amount, 0)) / next_lvl
+                    c[col] = lvl + progress
+            else:
+                c[col] = 0
+        return c
+
+    @staticmethod
+    def getLevel(req_xp, xp, *, subtract=True):
+        """Gets a level from required xp and total xp.
+
+        :param req_xp: The required XP.
+        :type req_xp: list
+
+        :param xp: The total XP.
+        :type xp: float
+
+        :param subtract: Whether or not to subtract from xp.
+        :type subtract: bool
+
+        :return: The level.
+        :rtype: int"""
+        lvl = 0
+        for level in req_xp:
+            if xp >= level:
+                if subtract:
+                    xp -= level
+                lvl += 1
+            elif xp < level:
+                break
+        return lvl

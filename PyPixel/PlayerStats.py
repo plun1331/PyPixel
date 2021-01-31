@@ -30,10 +30,8 @@ from .SkywarsStats import SkyWarsStats
 class PlayerStats(object):
     r"""Base class for a player's statistics.
     
-    Parameters
-    -----------
-    data: :class:`dict`
-        The raw player data from the API."""
+    :param data: The raw player data from the API.
+    :type data: dict"""
 
     def __init__(self, data: dict):
         stats = data['stats']
