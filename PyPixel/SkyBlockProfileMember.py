@@ -24,7 +24,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from .utils import SkyBlock, Hypixel
+from .utils import SkyBlockUtils, HypixelUtils
 import datetime
 from contextlib import suppress
 from .SkyBlockStats import SkyBlockStats, SkyBlockObjective, SkyBlockQuest, SkyBlockSlayer, SkyBlockPet
@@ -49,7 +49,7 @@ class ProfileMember(object):
         with suppress(KeyError):
             self.last_save = datetime.datetime.fromtimestamp(memberdata['last_save'] / 1000)
         with suppress(KeyError):
-            self.armour = Hypixel.parseNBT(memberdata['inv_armor']['data'])
+            self.armour = HypixelUtils.parseNBT(memberdata['inv_armor']['data'])
         with suppress(KeyError):
             self.first_join = datetime.datetime.fromtimestamp(memberdata['first_join'] / 1000)
         with suppress(KeyError):
@@ -69,7 +69,7 @@ class ProfileMember(object):
         with suppress(KeyError):
             self.crafted_minions = memberdata['crafted_generators']
         with suppress(KeyError):
-            self.crafted_minion_slots = SkyBlock.getMinionSlots(memberdata['crafted_generators'])
+            self.crafted_minion_slots = SkyBlockUtils.getMinionSlots(memberdata['crafted_generators'])
         with suppress(KeyError):
             self.visited_zones = memberdata['visited_zones']
         with suppress(KeyError):
@@ -98,75 +98,75 @@ class ProfileMember(object):
         with suppress(KeyError):
             self.dungeon_selected_class = memberdata['dungeons']['selected_dungeon_class']
         with suppress(KeyError):
-            self.combat_skill = {"level": SkyBlock.getSkillLevel(memberdata['experience_skill_combat']),
+            self.combat_skill = {"level": SkyBlockUtils.getSkillLevel(memberdata['experience_skill_combat']),
                                  "xp": memberdata['experience_skill_combat']}
         with suppress(KeyError):
-            self.mining_skill = {"level": SkyBlock.getSkillLevel(memberdata['experience_skill_mining']),
+            self.mining_skill = {"level": SkyBlockUtils.getSkillLevel(memberdata['experience_skill_mining']),
                                  "xp": memberdata['experience_skill_mining']}
         with suppress(KeyError):
-            self.alchemy_skill = {"level": SkyBlock.getSkillLevel(memberdata['experience_skill_alchemy']),
+            self.alchemy_skill = {"level": SkyBlockUtils.getSkillLevel(memberdata['experience_skill_alchemy']),
                                   "xp": memberdata['experience_skill_alchemy']}
         with suppress(KeyError):
-            self.farming_skill = {"level": SkyBlock.getSkillLevel(memberdata['experience_skill_farming']),
+            self.farming_skill = {"level": SkyBlockUtils.getSkillLevel(memberdata['experience_skill_farming']),
                                   "xp": memberdata['experience_skill_farming']}
         with suppress(KeyError):
-            self.taming_skill = {"level": SkyBlock.getSkillLevel(memberdata['experience_skill_taming']),
+            self.taming_skill = {"level": SkyBlockUtils.getSkillLevel(memberdata['experience_skill_taming']),
                                  "xp": memberdata['experience_skill_taming']}
         with suppress(KeyError):
-            self.enchanting_skill = {"level": SkyBlock.getSkillLevel(memberdata['experience_skill_enchanting']),
+            self.enchanting_skill = {"level": SkyBlockUtils.getSkillLevel(memberdata['experience_skill_enchanting']),
                                      "xp": memberdata['experience_skill_enchanting']}
         with suppress(KeyError):
-            self.fishing_skill = {"level": SkyBlock.getSkillLevel(memberdata['experience_skill_fishing']),
+            self.fishing_skill = {"level": SkyBlockUtils.getSkillLevel(memberdata['experience_skill_fishing']),
                                   "xp": memberdata['experience_skill_fishing']}
         with suppress(KeyError):
-            self.foraging_skill = {"level": SkyBlock.getSkillLevel(memberdata['experience_skill_foraging']),
+            self.foraging_skill = {"level": SkyBlockUtils.getSkillLevel(memberdata['experience_skill_foraging']),
                                    "xp": memberdata['experience_skill_foraging']}
         with suppress(KeyError):
-            self.carpentry_skill = {"level": SkyBlock.getSkillLevel(memberdata['experience_skill_carpentry']),
+            self.carpentry_skill = {"level": SkyBlockUtils.getSkillLevel(memberdata['experience_skill_carpentry']),
                                     "xp": memberdata['experience_skill_carpentry']}
         with suppress(KeyError):
-            self.runecrafting_skill = {"level": SkyBlock.getSkillLevel(memberdata['experience_skill_runecrafting']),
+            self.runecrafting_skill = {"level": SkyBlockUtils.getSkillLevel(memberdata['experience_skill_runecrafting']),
                                        "xp": memberdata['experience_skill_runecrafting']}
         with suppress(KeyError):
-            skills = [SkyBlock.getSkillLevel(memberdata['experience_skill_combat']),
-                      SkyBlock.getSkillLevel(memberdata['experience_skill_mining']),
-                      SkyBlock.getSkillLevel(memberdata['experience_skill_alchemy']),
-                      SkyBlock.getSkillLevel(memberdata['experience_skill_farming']),
-                      SkyBlock.getSkillLevel(memberdata['experience_skill_taming']),
-                      SkyBlock.getSkillLevel(memberdata['experience_skill_enchanting']),
-                      SkyBlock.getSkillLevel(memberdata['experience_skill_fishing']),
-                      SkyBlock.getSkillLevel(memberdata['experience_skill_foraging'])]
+            skills = [SkyBlockUtils.getSkillLevel(memberdata['experience_skill_combat']),
+                      SkyBlockUtils.getSkillLevel(memberdata['experience_skill_mining']),
+                      SkyBlockUtils.getSkillLevel(memberdata['experience_skill_alchemy']),
+                      SkyBlockUtils.getSkillLevel(memberdata['experience_skill_farming']),
+                      SkyBlockUtils.getSkillLevel(memberdata['experience_skill_taming']),
+                      SkyBlockUtils.getSkillLevel(memberdata['experience_skill_enchanting']),
+                      SkyBlockUtils.getSkillLevel(memberdata['experience_skill_fishing']),
+                      SkyBlockUtils.getSkillLevel(memberdata['experience_skill_foraging'])]
             self.skill_average = sum(skills) / len(skills)
         with suppress(KeyError):
-            self.fishing_bag = Hypixel.parseNBT(memberdata['fishing_bag']['data'])
+            self.fishing_bag = HypixelUtils.parseNBT(memberdata['fishing_bag']['data'])
         with suppress(KeyError):
             self.equipped_wardrobe_slot = memberdata['wardrobe_equipped_slot']
         with suppress(KeyError):
-            self.combat_collection = SkyBlock.combatCollection(memberdata)
+            self.combat_collection = SkyBlockUtils.combatCollection(memberdata)
         with suppress(KeyError):
-            self.mining_collection = SkyBlock.miningCollection(memberdata)
+            self.mining_collection = SkyBlockUtils.miningCollection(memberdata)
         with suppress(KeyError):
-            self.fishing_collection = SkyBlock.fishingCollection(memberdata)
+            self.fishing_collection = SkyBlockUtils.fishingCollection(memberdata)
         with suppress(KeyError):
-            self.farming_collection = SkyBlock.farmingCollection(memberdata)
+            self.farming_collection = SkyBlockUtils.farmingCollection(memberdata)
         with suppress(KeyError):
-            self.foraging_collection = SkyBlock.foragingCollection(memberdata)
+            self.foraging_collection = SkyBlockUtils.foragingCollection(memberdata)
         with suppress(KeyError):
-            self.quiver = Hypixel.parseNBT(memberdata['quiver']['data'])
+            self.quiver = HypixelUtils.parseNBT(memberdata['quiver']['data'])
         with suppress(KeyError):
-            self.ender_chest = Hypixel.parseNBT(memberdata['ender_chest_contents']['data'])
+            self.ender_chest = HypixelUtils.parseNBT(memberdata['ender_chest_contents']['data'])
         with suppress(KeyError):
-            self.wardrobe = Hypixel.parseNBT(memberdata['wardrobe_contents']['data'])
+            self.wardrobe = HypixelUtils.parseNBT(memberdata['wardrobe_contents']['data'])
         with suppress(KeyError):
-            self.potion_bag = Hypixel.parseNBT(memberdata['potion_bag']['data'])
+            self.potion_bag = HypixelUtils.parseNBT(memberdata['potion_bag']['data'])
         with suppress(KeyError):
-            self.personal_vault = Hypixel.parseNBT(memberdata['personal_vault_contents']['data'])
+            self.personal_vault = HypixelUtils.parseNBT(memberdata['personal_vault_contents']['data'])
         with suppress(KeyError):
-            self.inventory = Hypixel.parseNBT(memberdata['inv_contents']['data'])
+            self.inventory = HypixelUtils.parseNBT(memberdata['inv_contents']['data'])
         with suppress(KeyError):
-            self.talismans = Hypixel.parseNBT(memberdata['talisman_bag']['data'])
+            self.talismans = HypixelUtils.parseNBT(memberdata['talisman_bag']['data'])
         with suppress(KeyError):
-            self.candy_inventory = Hypixel.parseNBT(memberdata['candy_inventory_contents']['data'])
+            self.candy_inventory = HypixelUtils.parseNBT(memberdata['candy_inventory_contents']['data'])
 
     def __eq__(self, other):
         try:

@@ -30,7 +30,7 @@ import base64
 from typing import Union, Literal
 
 
-class Hypixel:
+class HypixelUtils:
     r"""General utilities relating to Hypixel."""
 
     @staticmethod

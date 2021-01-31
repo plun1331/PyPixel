@@ -28,7 +28,7 @@ from contextlib import suppress
 import datetime
 from .GuildMember import GuildMember
 from .GuildRank import GuildRank
-from .utils import Hypixel
+from .utils import HypixelUtils
 
 
 class Guild(object):
@@ -79,7 +79,7 @@ class Guild(object):
         with suppress(KeyError):
             self.chat_muted_since = guilddata['chatMute']
         with suppress(KeyError):
-            self.level = Hypixel.guildlevel(guilddata['exp'])
+            self.level = HypixelUtils.guildlevel(guilddata['exp'])
         with suppress(KeyError):
             self.xp = guilddata['exp']
         with suppress(KeyError):

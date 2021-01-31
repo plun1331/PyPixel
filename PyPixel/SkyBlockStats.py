@@ -26,11 +26,11 @@ SOFTWARE.
 
 from contextlib import suppress
 import datetime
-from .utils import SkyBlock
+from .utils import SkyBlockUtils
 
-types = {'zombie': SkyBlock.zombieSlayer,
-         'spider': SkyBlock.spiderSlayer,
-         'wolf': SkyBlock.wolfSlayer}
+types = {'zombie': SkyBlockUtils.zombieSlayer,
+         'spider': SkyBlockUtils.spiderSlayer,
+         'wolf': SkyBlockUtils.wolfSlayer}
 
 
 class SkyBlockStats(object):

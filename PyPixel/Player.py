@@ -28,7 +28,7 @@ from .Firework import Firework
 import datetime
 from contextlib import suppress
 from .PlayerStats import PlayerStats
-from .utils import Hypixel
+from .utils import HypixelUtils
 from .Errors import GuildNotFound
 
 
@@ -77,7 +77,7 @@ class Player(object):
         with suppress(KeyError):
             self.experience = playerdata['networkExp']
         with suppress(KeyError):
-            self.level = Hypixel.playerLevel(playerdata['networkExp'])
+            self.level = HypixelUtils.playerLevel(playerdata['networkExp'])
         with suppress(KeyError):
             self.name = playerdata['playername']
         with suppress(KeyError):
@@ -109,7 +109,7 @@ class Player(object):
         with suppress(KeyError):
             self.recently_played = playerdata['mostRecentGameType']
         with suppress(KeyError):
-            self.rank = Hypixel.getRank(playerdata)
+            self.rank = HypixelUtils.getRank(playerdata)
         with suppress(KeyError):
             self.cached = cached
 

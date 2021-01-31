@@ -27,24 +27,21 @@ SOFTWARE.
 from .items import Items
 
 
-class SkyBlock:
+class SkyBlockUtils:
     """ Utilities relating to Hypixel SkyBlock """
     @staticmethod
     def getItem(item: str, *, reverse: bool = False) -> str:
         r"""Gets an item name from an item ID.
 
-        Parameters
-        -----------
-        item :class:`str`
-            The item ID.
+        :param item: The item ID.
+        :type item: str
 
-        reverse :class:`Optional[bool]`
-            Whether or not to translate an item name to an item ID.
+        :param reverse: Whether or not to translate an item name to an item ID.
+        :type reverse: Optional[bool]
 
-        Returns
-        --------
-        :class:`str`
-            The item name/ID."""
+        :return: The item name/ID.
+        :rtype: str"""
+
         if not reverse:
             if item not in Items.ids:
                 return item
@@ -58,15 +55,12 @@ class SkyBlock:
     def getMinionSlots(crafted: list) -> int:
         r"""Gets the number of crafted minion slots a player has.
 
-        Parameters
-        -----------
-        crafted :class:`list`
-            The player's crafted minions.
+        :param crafted: The player's crafted minions.
+        :type crafted: list
 
-        Returns
-        --------
-        :class:`int`
-            The player's crafted minion slots."""
+        :return: The player's crafted minion slots.
+        :rtype: int"""
+
         req_unique = [5,
                       15,
                       30,
@@ -91,22 +85,19 @@ class SkyBlock:
             if minion not in minions:
                 minions.append(minion)
         rexp = len(minions)
-        slots = SkyBlock.getLevel(req_unique, rexp, subtract=False)+5
+        slots = SkyBlockUtils.getLevel(req_unique, rexp, subtract=False)+5
         return slots
 
     @staticmethod
     def zombieSlayer(xp) -> int:
         r"""Gets the level for the Zombie slayer from the slayer experience.
 
-        Parameters
-        -----------
-        xp :class:`float`
-            The player's Zombie slayer XP.
+        :param xp: The player's Zombie slayer XP.
+        :type xp: float
 
-        Returns
-        --------
-        :class:`int`
-            The player's Zombie slayer level."""
+        :return: The player's Zombie slayer level.
+        :rtype: int"""
+
         req_xp = [5,
                   15,
                   200,
@@ -116,22 +107,19 @@ class SkyBlock:
                   100000,
                   400000,
                   1000000]
-        lvl = SkyBlock.getLevel(req_xp, xp, subtract=False)
+        lvl = SkyBlockUtils.getLevel(req_xp, xp, subtract=False)
         return lvl
 
     @staticmethod
     def spiderSlayer(xp) -> int:
         r"""Gets the level for the Spider slayer from the slayer experience.
 
-        Parameters
-        -----------
-        xp :class:`float`
-            The player's Wolf slayer XP.
+        :param xp: The player's Spider slayer XP.
+        :type xp: float
 
-        Returns
-        --------
-        :class:`int`
-            The player's Spider slayer level."""
+        :return: The player's Spider slayer level.
+        :rtype: int"""
+
         req_xp = [5,
                   25,
                   200,
@@ -141,22 +129,18 @@ class SkyBlock:
                   100000,
                   400000,
                   1000000]
-        lvl = SkyBlock.getLevel(req_xp, xp, subtract=False)
+        lvl = SkyBlockUtils.getLevel(req_xp, xp, subtract=False)
         return lvl
 
     @staticmethod
     def wolfSlayer(xp: float) -> int:
         r"""Gets the level for the Wolf slayer from the slayer experience.
 
-        Parameters
-        -----------
-        xp :class:`float`
-            The player's Wolf slayer XP.
+        :param xp: The player's Wolf slayer XP.
+        :type xp: float
 
-        Returns
-        --------
-        :class:`int`
-            The player's Wolf slayer level."""
+        :return: The player's Wolf slayer level.
+        :rtype: int"""
         req_xp = [10,
                   30,
                   250,
@@ -166,49 +150,43 @@ class SkyBlock:
                   100000,
                   400000,
                   1000000]
-        lvl = SkyBlock.getLevel(req_xp, xp, subtract=False)
+        lvl = SkyBlockUtils.getLevel(req_xp, xp, subtract=False)
         return lvl
 
     @staticmethod
     def slayerLevels(data: dict) -> (int, int, int):
-        r""" Retrieves a SkyBlock player's Slayer levels from their profile data.
+        r"""Retrieves a SkyBlock player's Slayer levels from their profile data.
 
-        Parameters
-        -----------
-        data :class`dict`
-            The player's profile data.
+        :param data: The player's profile data.
+        :type data: dict
 
-        Returns
-        --------
-        :class:`(int, int, int)`
-            A tuple with the player's Slayer levels in the order Zombie, Spider, and Wolf."""
+        :return: A tuple with the player's Slayer levels in the order Zombie, Spider, and Wolf.
+        :retype: int, int, int"""
+
         try:
-            zombie = SkyBlock.zombieSlayer(data['slayer_bosses']['zombie']['xp'])
+            zombie = SkyBlockUtils.zombieSlayer(data['slayer_bosses']['zombie']['xp'])
         except KeyError:
             zombie = 0
         try:
-            spider = SkyBlock.spiderSlayer(data['slayer_bosses']['spider']['xp'])
+            spider = SkyBlockUtils.spiderSlayer(data['slayer_bosses']['spider']['xp'])
         except KeyError:
             spider = 0
         try:
-            wolf = SkyBlock.wolfSlayer(data['slayer_bosses']['wolf']['xp'])
+            wolf = SkyBlockUtils.wolfSlayer(data['slayer_bosses']['wolf']['xp'])
         except KeyError:
             wolf = 0
         return zombie, spider, wolf
 
     @staticmethod
     def getSkillLevel(xp: float) -> int:
-        r""" Converts skill XP to a skill level.
+        r"""Converts skill XP to a skill level.
 
-        Parameters
-        -----------
-        xp: :class:`float`
-            The skill experience.
+        :param xp: The skill experience.
+        :type xp: float
 
-        Returns
-        --------
-        :class:`int`
-            The skill's level."""
+        :return: The skill's level.
+        :rtype: int"""
+
         prog_req_xp = [50,
                        125,
                        200,
@@ -259,25 +237,21 @@ class SkyBlock:
                        3400000,
                        3700000,
                        4000000]
-        lvl = SkyBlock.getLevel(prog_req_xp, xp)
+        lvl = SkyBlockUtils.getLevel(prog_req_xp, xp)
         return lvl
 
     @staticmethod
     def getRuneCraftLevel(xp: float) -> int:
-        r""" Converts runecrafting skill XP to a skill level.
+        r"""Converts runecrafting skill XP to a skill level.
 
-        This is seperate from :function:`getSkillLevel` because runecrafting has
+        This is seperate from py:function:`getSkillLevel` because runecrafting has
         different experience requirements.
 
-        Parameters
-        -----------
-        xp: :class:`float`
-            The runecrafting skill experience.
+        :param xp: The runecrafting skill experience.
+        :type xp: float
 
-        Returns
-        --------
-        :class:`int`
-            The runecrafting skill's level."""
+        :return: The runecrafting skill's level.
+        :rtype: int"""
         prog_req_xp = [50,
                        100,
                        125,
@@ -302,22 +276,18 @@ class SkyBlock:
                        9800,
                        12200,
                        15300]
-        lvl = SkyBlock.getLevel(prog_req_xp, xp)
+        lvl = SkyBlockUtils.getLevel(prog_req_xp, xp)
         return lvl
 
     @staticmethod
     def farmingCollection(data: dict) -> dict:
-        r""" Gets a player's SkyBlock Farming collection from their member data.
+        r"""Gets a player's SkyBlock Farming collection from their member data.
 
-        Parameters
-        -----------
-        data :class:`dict`
-            The player's SkyBlock data.
+        :param data: The player's SkyBlock data.
+        :type data: dict
 
-        Returns
-        --------
-        :class:`dict`
-            A dict of their items in the Farming collection."""
+        :return: A dict of their items in the Farming collection.
+        :rtype: dict"""
         collections = ['WHEAT',
                        'CARROT_ITEM',
                        'POTATO_ITEM',
@@ -500,22 +470,18 @@ class SkyBlock:
                           100000]
             else:
                 req_xp = []
-            c = SkyBlock.getCollectionData(data, req_xp, collection, c)
+            c = SkyBlockUtils.getCollectionData(data, req_xp, collection, c)
         return c
 
     @staticmethod
     def miningCollection(data: dict):
-        r""" Gets a player's SkyBlock Mining collection from their member data.
+        r"""Gets a player's SkyBlock Mining collection from their member data.
 
-        Parameters
-        -----------
-        data :class:`dict`
-            The player's SkyBlock data.
+        :param data: The player's SkyBlock data.
+        :type data: dict
 
-        Returns
-        --------
-        :class:`dict`
-            A dict of their items in the Mining collection."""
+        :return: A dict of their items in the Mining collection.
+        :rtype: dict"""
         collections = ['COBBLESTONE',
                        'COAL',
                        'IRON_INGOT',
@@ -638,22 +604,18 @@ class SkyBlock:
                           50000]
             else:
                 req_xp = []
-            c = SkyBlock.getCollectionData(data, req_xp, collection, c)
+            c = SkyBlockUtils.getCollectionData(data, req_xp, collection, c)
         return c
 
     @staticmethod
     def combatCollection(data: dict) -> dict:
-        r""" Gets a player's SkyBlock Combat collection from their member data.
+        r"""Gets a player's SkyBlock Combat collection from their member data.
 
-        Parameters
-        -----------
-        data :class:`dict`
-            The player's SkyBlock data.
+        :param data: The player's SkyBlock data.
+        :type data: dict
 
-        Returns
-        --------
-        :class:`dict`
-            A dict of their items in the Combat collection."""
+        :return: A dict of their items in the Combat collection.
+        :rtype: dict"""
         collections = ['ROTTEN_FLESH',
                        'BONE',
                        'STRING',
@@ -719,22 +681,18 @@ class SkyBlock:
                           50000]
             else:
                 req_xp = []
-            c = SkyBlock.getCollectionData(data, req_xp, collection, c)
+            c = SkyBlockUtils.getCollectionData(data, req_xp, collection, c)
         return c
 
     @staticmethod
     def foragingCollection(data: dict) -> dict:
-        r""" Gets a player's SkyBlock Foraging collection from their member data.
+        r"""Gets a player's SkyBlock Foraging collection from their member data.
 
-        Parameters
-        -----------
-        data :class:`dict`
-            The player's SkyBlock data.
+        :param data: The player's SkyBlock data.
+        :type data: dict
 
-        Returns
-        --------
-        :class:`dict`
-            A dict of their items in the Foraging collection."""
+        :return: A dict of their items in the Foraging collection.
+        :rtype: dict"""
         collections = ['LOG',
                        'LOG:1',
                        'LOG:2',
@@ -805,22 +763,18 @@ class SkyBlock:
                           25000]
             else:
                 req_xp = []
-            c = SkyBlock.getCollectionData(data, req_xp, collection, c)
+            c = SkyBlockUtils.getCollectionData(data, req_xp, collection, c)
         return c
 
     @staticmethod
     def fishingCollection(data: dict):
-        r""" Gets a player's SkyBlock Fishing collection from their member data.
+        r"""Gets a player's SkyBlock Fishing collection from their member data.
 
-        Parameters
-        -----------
-        data :class:`dict`
-            The player's SkyBlock data.
+        :param data: The player's SkyBlock data.
+        :type data: dict
 
-        Returns
-        --------
-        :class:`dict`
-            A dict of their items in the Fishing collection."""
+        :return: A dict of their items in the Mining collection.
+        :rtype: dict"""
         collections = ['RAW_FISH',
                        'RAW_FISH:1',
                        'RAW_FISH:2',
@@ -925,7 +879,7 @@ class SkyBlock:
                           4000]
             else:
                 req_xp = []
-            c = SkyBlock.getCollectionData(data, req_xp, collection, c)
+            c = SkyBlockUtils.getCollectionData(data, req_xp, collection, c)
         return c
 
     @staticmethod
@@ -947,7 +901,7 @@ class SkyBlock:
         :return: The modified dict.
         :rtype: dict"""
         if len(req_xp) != 0:
-            col = SkyBlock.getItem(collection)
+            col = SkyBlockUtils.getItem(collection)
             if collection in data['collection']:
                 next_lvl = 0
                 amount = data['collection'][collection]
@@ -977,7 +931,7 @@ class SkyBlock:
         :param xp: The total XP.
         :type xp: float
 
-        :param subtract: Whether or not to subtract from xp.
+        :param subtract: Whether or not to subtract from xp. Defaults to ``True``
         :type subtract: bool
 
         :return: The level.

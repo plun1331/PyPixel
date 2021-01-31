@@ -24,7 +24,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from .utils import Hypixel
+from .utils import HypixelUtils
 from contextlib import suppress
 
 
@@ -47,7 +47,7 @@ class SkyWarsStats(object):
         with suppress(KeyError):
             self.experience = stats['skywars_experience']
         with suppress(KeyError):
-            self.level = Hypixel.skywarsLevel(stats['skywars_experience'])
+            self.level = HypixelUtils.skywarsLevel(stats['skywars_experience'])
 
     class Overall(object):
         r"""The player's overall SkyWars stats.
