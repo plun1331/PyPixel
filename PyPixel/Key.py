@@ -53,4 +53,3 @@ class APIKey(object):
         :return: The key's owner.
         :rtype: PyPixel.Player.Player"""
         return await self._hypixel.get_player(self.owner)
-

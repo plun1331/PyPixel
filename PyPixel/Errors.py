@@ -27,6 +27,7 @@ SOFTWARE.
 
 class PyPixelError(Exception):
     r"""Base exception class for PyPixel."""
+
     def __init__(self, *args):
         super().__init__(*args)
 
@@ -45,6 +46,7 @@ class HTTPExeption(PyPixelError):
 
     :param data: The JSON data returned from the request, if any.
     :type data: Optional[dict]"""
+
     def __init__(self, status_code, reason, url, data):
         self.status_code = status_code
         self.reason = reason
@@ -69,6 +71,7 @@ class APIError(HTTPExeption):
 
     :param data: The JSON data returned from the request, if any.
     :type data: Optional[dict]"""
+
     def __init__(self, status_code, reason, url, data):
         self.status_code = status_code
         self.reason = reason
@@ -96,6 +99,7 @@ class ClientError(HTTPExeption):
 
     :param data: The JSON data returned from the request, if any.
     :type data: Optional[dict]"""
+
     def __init__(self, status_code, reason, url, data):
         self.status_code = status_code
         self.reason = reason
@@ -120,6 +124,7 @@ class NotFound(ClientError):
 
     :param data: The JSON data returned from the request, if any.
     :type data: Optional[dict]"""
+
     def __init__(self, reason, url, data):
         self.status_code = 404
         self.reason = reason

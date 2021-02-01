@@ -10,6 +10,17 @@ An asynchronous wrapper for the Hypixel API.
 :license: MIT, see LICENSE for more details.
 
 """
+
+__title__ = 'PyPixel'
+__author__ = 'plun1331'
+__license__ = 'MIT'
+__copyright__ = 'Copyright 2021 plun1331'
+__version__ = '0.1.9'
+
+__path__ = __import__('pkgutil').extend_path(__path__, __name__)
+
+from collections import namedtuple
+
 from .Cache import Cache
 from .Errors import *
 from .Firework import Firework
@@ -22,3 +33,8 @@ from .PlayerStats import PlayerStats, SkyWarsStats
 from .SkyBlockProfile import SkyBlockProfile
 from .SkyBlockProfileMember import SkyBlockStats, SkyBlockObjective, SkyBlockQuest, SkyBlockSlayer, SkyBlockPet, \
     ProfileMember
+from .Achievements import AchievementData, AchievementTier, Achievement, AchievementGame, Tiered, OneTime
+
+VersionInfo = namedtuple('VersionInfo', 'major minor micro releaselevel serial')
+
+version_info = VersionInfo(major=0, minor=1, micro=9, releaselevel='stable', serial=0)

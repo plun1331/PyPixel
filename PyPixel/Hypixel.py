@@ -28,11 +28,12 @@ import aiohttp
 import asyncio
 from typing import List, Tuple, Literal
 from .Player import Player
-from .Errors import PlayerNotFound, GuildNotFound, APIError, NotFound, ClientError, KeyNotFound
+from .Errors import PlayerNotFound, GuildNotFound, APIError, NotFound, ClientError, KeyNotFound, PyPixelError
 from .Cache import Cache
 from .Guild import Guild
 from .SkyBlockProfile import SkyBlockProfile
 from .Key import APIKey
+from .Achievements import AchievementData
 
 
 class Hypixel:
@@ -45,18 +46,23 @@ class Hypixel:
     :type base_url: Optional[str]
 
     :param clear_cache_after: How often the cache should clear in seconds.
-    :type clear_cache_after: Optional[int]"""
+    :type clear_cache_after: Optional[int]
 
-    def __init__(self, *, api_key: str, base_url: str = "https://api.hypixel.net/", clear_cache_after: int = 300):
+    :param validate: Whether or not to validate the provided API Key. Defaults to ``True``.
+    :type validate: bool"""
+
+    def __init__(self, *, api_key: str, base_url: str = "https://api.hypixel.net/", clear_cache_after: int = 300,
+                 validate: bool=True):
         self.api_key = str(api_key)
         b = str(base_url) if str(base_url).endswith('/') else str(base_url) + '/'
         self.base_url = b if b.startswith('https://') or b.startswith('http://') else 'https://' + b
         self.cache = Cache(int(clear_cache_after))
-        try:
-            loop = asyncio.new_event_loop()
-            loop.run_until_complete(self.get_key())
-        except KeyNotFound:
-            raise ValueError("The API Key {0} is invalid.".format(self.api_key))
+        if validate:
+            try:
+                loop = asyncio.new_event_loop()
+                loop.run_until_complete(self.get_key())
+            except KeyNotFound:
+                raise ValueError("The API Key {0} is invalid.".format(self.api_key))
 
     async def get_player(self, uuid: str) -> Player:
         r"""|coro|
@@ -220,6 +226,22 @@ class Hypixel:
             cached,
             self
         )
+
+    async def get_achievements(self):
+        r"""|coro|
+
+        Gets every achievement on the Hypixel Network using the ``/resources/achievements`` endpoint.
+
+        This does not require an API Key.
+
+        :return: An object containing every achievement.
+        :rtype: PyPixel.Achievements.AchievementData"""
+
+        url = "{0}resources/achievements".format(self.base_url)
+        data, cached = await self._send(url)
+        if not data['success']:
+            raise PyPixelError("Couldn't GET from {0}: {1}".format(url, data['cause']))
+        return AchievementData(data, cached)
 
     async def get_name(self, uuid: str) -> str:
         r"""|coro|
