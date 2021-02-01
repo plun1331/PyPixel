@@ -141,6 +141,11 @@ API Reference
 
     The main class that will be used for requesting information from the Hypixel API.
 
+    .. versionchanged:: 0.1.8
+
+        Your API Key will now be validated upon initialization.
+
+
     :param api_key: Your Hypixel API key.
     :type api_key: str_
 
@@ -196,6 +201,23 @@ API Reference
         :return: A list containing the player's profiles.
         :rtype: List[:ref:`SkyBlockProfile<SkyBlockProfile>`]
 
+    .. py:method:: get_key(key=None)
+
+        .. versionadded:: 0.1.8
+
+        |coro|
+
+        Gets information on an API Key.
+
+        :param key: The API key you want information for.
+                    Defaults to the API key you provided on initialization of the class.
+        :type key: Optional[str_]
+
+        :raises KeyNotFound_: The key provided does not exist.
+
+        :return: The data on the API Key
+        :rtype: :ref:`APIKey`<APIKey>`
+
     .. py:method:: get_name(uuid)
 
         |coro|
@@ -228,14 +250,71 @@ API Reference
 
         |coro|
 
+        .. versionchanged:: 0.1.8
+
+            This will now raise exceptions when a http error code is returned by the API.
+
         Sends a request to the specified url.
 
         :param url: The URL the request will be sent to.
         :type url: str_
 
+        :raises APIError_: The API returned a ``500`` range status code.
+        :raises NotFound_: The API returned a ``404`` status code.
+        :raises ClientError_: The API returned a ``400`` range status code.
+
         :return: The json data from the API, and a boolean value indicating
             whether or not the data was retrieved from the cache.
         :rtype: dict_, bool_
+
+.. _APIKey:
+.. py:class:: APIKey(key_data, cached, hypixel):
+
+    .. versionadded:: 0.1.8
+
+    Represents an API Key.
+
+    :param key_data: The raw key data from the API.
+    :type key_data: dict
+
+    :param cached: The raw key data from the API.
+    :type cached: bool
+
+    :param hypixel: The raw key data from the API.
+    :type hypixel: :ref:`Hypixel<Hypixel>`
+
+    .. py:attribute:: cached
+
+        Indicates whether or not the data was retrieved from the cache.
+
+    .. py:attribute:: key
+
+        The API Key
+
+    .. py:attribute:: owner
+
+        The key's owner.
+
+    .. py:attribute::: ratelimit
+
+        The key's ratelimit in requests/min.
+
+    .. py:attribute:: request_past_minute
+
+        The amount of requests made with the key in the past minute.
+
+    .. py:attribute:: total_requests
+
+        The total amount of requests made with the key.
+
+    .. py:method:: get_owner()
+
+        |coro|
+
+        Gets the owner pf the key as a Player object.
+
+        :return: The key's owner.
+        :rtype: Player_
 
 .. _Player:
 .. py:class:: Player(data, cached, hypixel)
@@ -527,38 +606,96 @@ API Reference
 Exceptions
 ***********
 
+.. versionchanged:: 0.1.8
+
+    These exceptions are now actually used.
+
+    Oh also the parameters changed.
+
+
 .. _PyPixelError:
-.. py:exception:: PyPixelError
+.. py:exception:: PyPixelError(*args)
 
     Base exception class for PyPixel.
 
 .. _HTTPException:
 .. py:exception:: HTTPException
 
-    Exception that's thrown when the API returns a non-200 range status code.
+    Base exception class for when the API returns an http error code.
+
+    :param status_code: The status code returned by the API.
+    :type status_code: int_
+
+    :param reason: The reason the request failed.
+    :type reason: str_
+
+    :param url: The url the request was sent to.
+    :type url: str_
+
+    :param data: The JSON data returned from the request, if any.
+    :type data: Optional[dict_]
 
 .. _APIError:
 .. py:exception:: APIError
 
     Exception that's thrown when the API returns a 500 range status code.
 
+    :param status_code: The status code returned by the API.
+    :type status_code: int_
+
+    :param reason: The reason the request failed.
+    :type reason: str_
+
+    :param url: The url the request was sent to.
+    :type url: str_
+
+    :param data: The JSON data returned from the request, if any.
+    :type data: Optional[dict_]
+
 .. _ClientError:
 .. py:exception:: ClientError
 
     Exception that's thrown when the API returns a 400 range status code.
 
+    :param status_code: The status code returned by the API.
+    :type status_code: int_
+
+    :param reason: The reason the request failed.
+    :type reason: str_
+
+    :param url: The url the request was sent to.
+    :type url: str_
+
+    :param data: The JSON data returned from the request, if any.
+    :type data: Optional[dict_]
+
 .. _NotFound:
 .. py:exception:: NotFound
 
-    Exception that's thrown when the API returns a 404 status code.
+    Exception thats thrown when the API returns a 404 status code.
+
+    :param reason: The reason the request failed.
+    :type reason: str_
+
+    :param url: The url the request was sent to.
+    :type url: str_
+
+    :param data: The JSON data returned from the request, if any.
+    :type data: Optional[dict_]
 
 .. _PlayerNotFound:
 .. py:exception:: PlayerNotFound(reason)
 
-    Exception that's thrown when a player couldn't be found.
+    Exception thats thrown when a player couldn't be found.
 
     :param reason: The reason the player couldn't be found.
     :type reason: str_
+
+    :param url: The url the request was sent to.
+    :type url: str_
+
+    :param data: The JSON data returned from the request, if any.
+    :type data: Optional[dict_]
 
 .. _GuildNotFound:
 .. py:exception:: GuildNotFound(reason)
@@ -567,6 +704,28 @@ Exceptions
 
     :param reason: The reason the guild couldn't be found.
     :type reason: str_
+
+    :param url: The url the request was sent to.
+    :type url: str_
+
+    :param data: The JSON data returned from the request, if any.
+    :type data: Optional[dict_]
+
+.. _KeyNotFound:
+.. py:exception:: KeyNotFound(reason, url, data)
+
+    .. versionadded:: 0.1.8
+
+    Exception thats thrown when an API Key couldn't be found.
+
+    :param reason: The reason the key couldn't be found.
+    :type reason: str_
+
+    :param url: The url the request was sent to.
+    :type url: str_
+
+    :param data: The JSON data returned from the request, if any.
+    :type data: Optional[dict_]
 
 .. |coro| replace:: This function is a coroutine_.
 .. _TypeError: https://docs.python.org/3/library/exceptions.html#TypeError

@@ -17,6 +17,13 @@ An asynchronous wrapper for the Hypixel API.
    :target: https://pypi.python.org/pypi/pypixel-api
    :alt: PyPI supported Python versions
 
+.. attention::
+
+   As of version 0.1.8, attributes will no longer be missing and should instead have a value of ``None``.
+
+   If there are still attributes missing, please open an issue on our GitHub_.
+
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
@@ -24,8 +31,8 @@ An asynchronous wrapper for the Hypixel API.
    tutorial
    examples
    api
-   faq
    utils/index
+   faq
 
 Getting Started
 ================
@@ -33,3 +40,5 @@ Is this your first time using PyPixel? This is the place to get started!
 
 * :ref:`tutorial`
 * :ref:`examples`
+
+.. _GitHub: https://github.com/plun1331/PyPixel/

@@ -25,12 +25,14 @@ SOFTWARE.
 """
 
 import aiohttp
+import asyncio
 from typing import List, Tuple, Literal
 from .Player import Player
-from .Errors import PlayerNotFound, GuildNotFound
+from .Errors import PlayerNotFound, GuildNotFound, APIError, NotFound, ClientError, KeyNotFound
 from .Cache import Cache
 from .Guild import Guild
 from .SkyBlockProfile import SkyBlockProfile
+from .Key import APIKey
 
 
 class Hypixel:
@@ -40,16 +42,21 @@ class Hypixel:
     :type api_key: str
 
     :param base_url: The base URL for the Hypixel API. Defaults to 'https://api.hypixel.net/'.
-    :type base_url: str, optional
+    :type base_url: Optional[str]
 
     :param clear_cache_after: How often the cache should clear in seconds.
-    :type clear_cache_after: int, optional"""
+    :type clear_cache_after: Optional[int]"""
 
     def __init__(self, *, api_key: str, base_url: str = "https://api.hypixel.net/", clear_cache_after: int = 300):
         self.api_key = str(api_key)
         b = str(base_url) if str(base_url).endswith('/') else str(base_url) + '/'
         self.base_url = b if b.startswith('https://') or b.startswith('http://') else 'https://' + b
         self.cache = Cache(int(clear_cache_after))
+        try:
+            loop = asyncio.new_event_loop()
+            loop.run_until_complete(self.get_key())
+        except KeyNotFound:
+            raise ValueError("The API Key {0} is invalid.".format(self.api_key))
 
     async def get_player(self, uuid: str) -> Player:
         r"""|coro|
@@ -64,10 +71,22 @@ class Hypixel:
         :return: The player from the API.
         :rtype: PyPixel.Player.Player"""
 
-        url = self.base_url + '{0.base_url}player?key={0.api_key}&uuid={1}'.format(self, uuid)
-        data, cached = await self._send(url)
+        url = '{0.base_url}player?key={0.api_key}&uuid={1}'.format(self, uuid)
+        try:
+            data, cached = await self._send(url)
+        except NotFound as e:
+            reason = e.data['cause'] if e.data is not None else 'None'
+            raise PlayerNotFound(
+                reason,
+                e.url,
+                e.data
+            )
         if not data['success']:
-            raise PlayerNotFound(data['cause'])
+            raise PlayerNotFound(
+                data['cause'],
+                url,
+                data
+            )
         if not cached:
             await self.cache.cache(url, data)
         player = Player(data, cached, self)
@@ -99,14 +118,34 @@ class Hypixel:
             url += 'player={0}'.format(arg)
         else:
             raise TypeError("Invalid input: " + by)
-        data, cached = await self._send(url)
+        try:
+            data, cached = await self._send(url)
+        except NotFound as e:
+            reason = e.data['cause'] if e.data is not None else 'None'
+            raise GuildNotFound(
+                reason,
+                e.url,
+                e.data
+            )
         if not data['success']:
-            raise GuildNotFound(data['cause'])
+            raise GuildNotFound(
+                data['cause'],
+                url,
+                data
+            )
         if not cached:
             await self.cache.cache(url, data)
         if by.lower() == 'player' and data['guild'] is None:
-            raise GuildNotFound("Player {0} is not in a guild.".format(arg))
-        guild = Guild(data, cached, self)
+            raise GuildNotFound(
+                "Player {0} is not in a guild.".format(arg),
+                url,
+                data
+            )
+        guild = Guild(
+            data,
+            cached,
+            self
+        )
         return guild
 
     async def get_profiles(self, uuid: str) -> List[SkyBlockProfile]:
@@ -123,15 +162,64 @@ class Hypixel:
         :rtype: List[PyPixel.SkyBlockProfile.SkyBlockProfile]"""
 
         url = '{0.base_url}skyblock/profiles?key={0.api_key}&uuid={1}'.format(self, uuid)
-        data, cached = await self._send(url)
+        try:
+            data, cached = await self._send(url)
+        except NotFound as e:
+            reason = e.data['cause'] if e.data is not None else 'None'
+            raise PlayerNotFound(
+                reason,
+                url,
+                e.data
+            )
         if not data['success']:
-            raise PlayerNotFound(data['cause'])
+            raise PlayerNotFound(
+                data['cause'],
+                url,
+                data
+            )
         if not cached:
             await self.cache.cache(url, data)
         profiles = []
         for profile in data['profiles']:
             profiles.append(SkyBlockProfile(profile, cached, self))
         return profiles
+
+    async def get_key(self, key=None):
+        """|coro|
+
+        Gets information on an API Key.
+
+        :param key: The API key you want information for.
+                    Defaults to the API key you provided on initialization of the class.
+        :type key: Optional[str]
+
+        :return: The data on the API Key
+        :rtype: PyPixel.Key.APIKey"""
+        if key is None:
+            key = self.api_key
+        url = "{0.base_url}key?key={1}".format(self, key)
+        try:
+            data, cached = await self._send(url)
+        except NotFound as e:
+            reason = e.data['cause'] if e.data is not None else "None"
+            raise KeyNotFound(
+                reason,
+                e.url,
+                e.data
+            )
+        if not data['success']:
+            raise KeyNotFound(
+                data['cause'],
+                url,
+                data
+            )
+        if not cached:
+            await self.cache.cache(url, data)
+        return APIKey(
+            data['record'],
+            cached,
+            self
+        )
 
     async def get_name(self, uuid: str) -> str:
         r"""|coro|
@@ -146,11 +234,23 @@ class Hypixel:
         :return: The player's name.
         :rtype: str"""
 
-        data, cached = await self._send("https://sessionserver.mojang.com/session/minecraft/profile/{0}".format(uuid))
+        url = "https://sessionserver.mojang.com/session/minecraft/profile/{0}".format(uuid)
+        try:
+            data, cached = await self._send(url)
+        except NotFound as e:
+            raise PlayerNotFound(
+                "Player does not exist",
+                e.url,
+                e.data
+            )
         try:
             return data['name']
         except:
-            raise PlayerNotFound
+            raise PlayerNotFound(
+                "Player does not exist",
+                url,
+                data
+            )
 
     async def get_uuid(self, name: str) -> str:
         r"""|coro|
@@ -164,12 +264,23 @@ class Hypixel:
 
         :return: The player's UUID.
         :rtype: str"""
-
-        data, cached = await self._send("https://api.mojang.com/users/profiles/minecraft/{0}".format(name))
+        url = "https://api.mojang.com/users/profiles/minecraft/{0}".format(name)
+        try:
+            data, cached = await self._send(url)
+        except NotFound as e:
+            raise PlayerNotFound(
+                "Player does not exist",
+                e.url,
+                e.data
+            )
         try:
             return data['id']
         except:
-            raise PlayerNotFound
+            raise PlayerNotFound(
+                "Player does not exist",
+                url,
+                data
+            )
 
     async def _send(self, url: str) -> Tuple[dict, bool]:
         r"""|coro|
@@ -188,6 +299,29 @@ class Hypixel:
         if data is None:
             async with aiohttp.ClientSession() as session:
                 async with session.get(url) as response:
-                    data = await response.json()
+                    try:
+                        data = await response.json()
+                    except aiohttp.ClientError:
+                        data = None
+                    if 500 <= response.status < 600:
+                        raise APIError(
+                            response.status,
+                            "None",
+                            url,
+                            data
+                        )
+                    if response.status == 404:
+                        raise NotFound(
+                            "None",
+                            url,
+                            data
+                        )
+                    if 400 <= response.status < 500:
+                        raise ClientError(
+                            response.status,
+                            "None",
+                            url,
+                            data
+                        )
             cached = False
         return data, cached
