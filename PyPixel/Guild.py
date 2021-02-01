@@ -78,5 +78,4 @@ class Guild(object):
         :rtype:`PyPixel.Player.Player`
             The returned player."""
         uuid = member.uuid
-        player = await self._hypixel.get_player(uuid)
-        return player
+        return await self._hypixel.get_player(uuid)

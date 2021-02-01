@@ -28,6 +28,7 @@ from nbt.nbt import NBTFile
 import io
 import base64
 from typing import Union, Literal
+from .games import GameInfo
 
 
 class HypixelUtils:
@@ -157,3 +158,24 @@ class HypixelUtils:
                     # noinspection PyTypeChecker
                     level = int(round(int(1 + i + float(xp - xps[i - 1]) / (item - xps[i - 1], 0))))
         return level
+
+    @staticmethod
+    def getGameName(game: Union[int, str]):
+        r"""Gets the name of a Hypixel gamemode from its ID or it's name in the API.
+
+        :param game: The game's ID/API Name.
+        :type game: Union[int, str]
+
+        :return: The game's name, or if the game is not found, the original value you provided.
+        :rtype: str"""
+        if isinstance(game, int):
+            for game_ in GameInfo.ids:
+                if GameInfo.ids[game_] == game:
+                    return GameInfo.apinames[game_]
+        else:
+            if game in GameInfo.apinames:
+                return GameInfo.apinames[game]
+        if isinstance(game, str):
+            if game.lower() in GameInfo.databasenames:
+                return GameInfo.databasenames(game.lower())
+        return game

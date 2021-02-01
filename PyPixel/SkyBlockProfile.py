@@ -25,7 +25,6 @@ SOFTWARE.
 """
 
 from .SkyBlockProfileMember import ProfileMember
-from contextlib import suppress
 
 
 class SkyBlockProfile(object):
