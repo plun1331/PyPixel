@@ -177,5 +177,5 @@ class HypixelUtils:
                 return GameInfo.apinames[game]
         if isinstance(game, str):
             if game.lower() in GameInfo.databasenames:
-                return GameInfo.databasenames(game.lower())
+                return GameInfo.databasenames[game.lower()]
         return game
