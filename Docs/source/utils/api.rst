@@ -1,10 +1,8 @@
-Utils Documentation
-====================
+PyPixel.utils API Reference
+============================
 The following section outlines the API for PyPixel.utils.
 
-API Reference
-**************
-.. _utils.Hypixel:
+.. _HypixelUtils:
 .. py:class:: HypixelUtils
 
     General utilities relating to Hypixel.
@@ -59,6 +57,19 @@ API Reference
 
         :return: The player's SkyWars level.
         :rtype: int_
+
+    .. py:staticmethod:: getGameName(game)
+
+        .. versionadded:: 0.1.9
+
+        Gets the name of a Hypixel gamemode from its ID or it's name in the API.
+
+        :param game: The game's ID/API Name.
+        :type game: Union[int_, str_]
+
+        :return: The game's name, or if the game is not found, the original value you provided.
+        :rtype: str_
+
 
 .. py:class:: SkyBlockUtils
 
@@ -236,6 +247,9 @@ API Reference
         :return: The level.
         :rtype: int_
 
+
+
+
 .. class:: Items
 
     A class containing all the Hypixel SkyBlock Item IDs.
@@ -243,6 +257,27 @@ API Reference
     .. py:attribute:: ids
 
         A dict_ of every SkyBlock item ID.
+
+
+
+.. py:class:: GameInfo
+
+    .. versionadded:: 0.1.9
+
+    Contains information on some games and their IDs.
+
+    .. py:attribute:: apinames
+
+        A dict_ containing game names and what they're referred to in the API.
+
+    .. py:attribute:: databasenames
+
+        A dict_ containing game names and what they're referred to in the Hypixel database (I assume).
+
+    .. py:attribute:: ids
+
+        A dict_ containing the game's API names and IDs.
+
 
 
 .. |coro| replace:: This function is a coroutine_.

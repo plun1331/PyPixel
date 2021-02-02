@@ -234,6 +234,8 @@ class Hypixel:
 
         This does not require an API Key.
 
+        :raises PyPixel.Errors.PyPixelError: The request failed for some reason.
+
         :return: An object containing every achievement.
         :rtype: PyPixel.Achievements.AchievementData"""
 

@@ -83,6 +83,8 @@ class Achievement(object):
 class OneTime(Achievement):
     r"""Represents a one-time achievement.
 
+    This inherits from PyPixel.Achievements.Achievement.
+
     :param data: The achievement's data.
     :type data: dict"""
 
@@ -95,6 +97,8 @@ class OneTime(Achievement):
 
 class Tiered(Achievement):
     r"""Represents a tiered achievement.
+
+    This inherits from PyPixel.Achievements.Achievement.
 
     :param data: The achievement's data.
     :type data: dict"""

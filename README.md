@@ -40,6 +40,12 @@ py -3 -m pip install -U git+https://github.com/plun1331/PyPixel
 You can find some examples [in our documentation](https://pypixel.readthedocs.io/en/latest/examples.html)
 
 # Changelog
+## 0.1.9
+- Added support for the `/resources/achievements` endpoint.
+- Added a kwarg to bypass API key validation.
+- Added this changelog to the documentation.
+- A few other changes that can be found in the docs.
+
 ## 0.1.8a
 - The module will now return `None` instead of having the value simply be missing.
 

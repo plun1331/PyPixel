@@ -33,6 +33,7 @@ An asynchronous wrapper for the Hypixel API.
    api
    utils/index
    faq
+   changelog
 
 Getting Started
 ================
