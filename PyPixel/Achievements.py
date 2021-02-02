@@ -27,6 +27,7 @@ SOFTWARE.
 import datetime
 from .utils import HypixelUtils
 
+
 class AchievementData(object):
     r"""Represents Hypixel achievement data.
 
@@ -40,7 +41,7 @@ class AchievementData(object):
         self.raw = data
         self.cached = cached
         self.last_updated = datetime.datetime.fromtimestamp(
-            data['lastUpdated']
+            data['lastUpdated'] / 1000
         )
         achievements = data['achievements']
         self.games = [AchievementGame(game, achievements[game]) for game in achievements]
