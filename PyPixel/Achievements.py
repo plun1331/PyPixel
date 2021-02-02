@@ -88,9 +88,9 @@ class OneTime(Achievement):
 
     def __init__(self, data):
         super().__init__(data)
-        self.points = data['points']
-        self.percent_unlocked_game = data['gamePercentUnlocked']
-        self.percent_unlocked_global = data['globalPercentUnlocked']
+        self.points = data['points'] if 'points' in data else None
+        self.percent_unlocked_game = data['gamePercentUnlocked'] if 'gamePercentUnlocked' in data else None
+        self.percent_unlocked_global = data['globalPercentUnlocked'] if 'globalPercentUnlocked' in data else None
 
 
 class Tiered(Achievement):
