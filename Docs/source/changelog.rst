@@ -15,7 +15,7 @@ Changelog
 
 0.1.7
 ******
-* Added documentation: [pypixel.readthedocs.io](https://pypixel.readthedocs.io/en/latest/)
+* Added documentation: https://pypixel.rtfd.io/
 
 0.1.6
 ******
