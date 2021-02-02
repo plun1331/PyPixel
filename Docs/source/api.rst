@@ -1,9 +1,162 @@
-Documentation
+API Reference
 ==============
 The following section outlines the API for PyPixel.
 
-API Reference
-**************
+.. _AchievementData:
+.. py:class:: AchievementData(data, cached)
+
+    .. versionadded:: 0.1.9
+
+    Represents Hypixel achievement data.
+
+    :param data: The raw data from the API.
+    :type data: dict_
+
+    :param cached: Whether or not the data was retrieved from the cache.
+    :type cached: bool_
+
+    .. py:attribute:: raw
+
+        The raw data from the API.
+
+    .. py:attribute:: cached
+
+        Whether or not the data was retrieved from the cache.
+
+    .. py:attribute:: last_updated
+
+        The date and time the achievements were last updated.
+
+    .. py:attribute:: games
+
+        A list of AchievementGame_.
+
+
+
+
+.. _AchievementGame:
+.. py:class:: AchievementGame(name, data):
+
+    .. versionadded:: 0.1.9
+
+    Represents a game with achievements.
+
+    :param name: The name of the game.
+    :type name: str_
+
+    :param data: The game's achievement data.
+    :type data: dict_
+
+    .. py:attribute:: name
+
+        The game's name.
+
+    .. py:attribute:: total_points
+
+        The total amount of achievement points you can earn in the game.
+
+    .. py:attribute:: one_time
+
+        A list of OneTime_.
+
+    .. py:attribute:: tiered
+
+        A list of Tiered_.
+
+
+
+
+.. _Achievement:
+.. py:class:: Achievement(data)
+
+    .. versionadded:: 0.1.9
+
+    Represents a Hypixel achievement.
+
+    :param data: The achievement's data.
+    :type data: dict_
+
+    .. py:attribute:: name
+
+        The achievement's name.
+
+    .. py:attribute:: description
+
+        The achievement's description.
+
+
+
+
+.. _OneTime:
+.. py:class:: OneTime(data)
+
+    .. versionadded:: 0.1.9
+
+    Represents a one-time achievement.
+
+    This inherits from Achievement_.
+
+    :param data: The achievement's data.
+    :type data: dict_
+
+    .. py:attribute:: points
+
+        The amount of achievement points the achievement is worth.
+
+    .. py:attribute:: percent_unlocked_game
+
+        The percent of players who played the game the achievement belongs to that have it.
+
+    .. py:attribute:: percent_unlocked_global
+
+        The percent of players across the network that have the achievement.
+
+
+
+
+.. _Tiered:
+.. py:class:: Tiered(data)
+
+    .. versionadded:: 0.1.9
+
+    Represents a tiered achievement.
+
+    This inherits from Achievement_.
+
+    :param data: The achievement's data.
+    :type data: dict_
+
+    .. py:attribute:: tiers
+
+         A list of AchievementTier_.
+
+
+
+
+.. _AchievementTier:
+
+    .. versionadded:: 0.1.9
+
+    Represents an achievement tier in a tiered achievement.
+
+    :param data: The tier's data.
+    :type data: dict_
+
+    .. py:attribute:: tier
+
+        The Tier's tier (if that makes sense).
+
+    .. py:attribute:: points
+
+        The amount of points the tier is worth.
+
+    .. py:attribute:: amount
+
+        The amount of ``x`` you have to get for this tier.
+
+
+
+
 .. _Cache:
 .. py:class:: Cache(clear_cache_after)
 
@@ -46,13 +199,8 @@ API Reference
         :param data: The response as a dict.
         :type data: dict_
 
-.. _Firework:
-.. py:class:: Firework(firework)
 
-    Represents a firework. Interesting, right?
 
-    :param firework: The raw firework data.
-    :type firework: dict_
 
 .. _Guild:
 .. py:class:: Guild(data, cached, hypixel)
@@ -79,6 +227,9 @@ API Reference
 
         :return: The retrieved player.
         :rtype: :ref:`Player<Player>`
+
+
+
 
 .. _GuildMember:
 .. py:class:: GuildMember(memberdata)
@@ -108,6 +259,9 @@ API Reference
 
         The player's guild XP history.
 
+
+
+
 .. _GuildRank:
 .. py:class:: GuildRank(rankdata)
 
@@ -136,30 +290,36 @@ API Reference
 
         The rank's priority in the guild's rank heirarchy.
 
+
+
+
 .. _Hypixel:
-.. py:class:: Hypixel(*, api_key, base_url = "https://api.hypixel.net, clear_cache_after = 300)
+.. py:class:: Hypixel(*, api_key, base_url = "https://api.hypixel.net, clear_cache_after = 300, validate=False)
 
     The main class that will be used for requesting information from the Hypixel API.
 
-    .. versionchanged:: 0.1.8
+    .. versionchanged:: 0.1.9
 
-        Your API Key will now be validated upon initialization.
+        Added a kwarg that allows you to bypass the validation of your API Key.
 
 
     :param api_key: Your Hypixel API key.
     :type api_key: str_
 
-    :param base_url: The base URL for the Hypixel API. Defaults to 'https://api.hypixel.net/'.
+    :param base_url: The base URL for the Hypixel API. Defaults to ``https://api.hypixel.net/``.
     :type base_url: Optional[str_]
 
     :param clear_cache_after: How often the cache should clear in seconds.
     :type clear_cache_after: Optional[int_]
 
+    :param validate: Whether or not to validate the provided API Key. Defaults to ``True``.
+    :type validate: bool_
+
     .. py:method:: get_player(uuid)
 
         |coro|
 
-        Gets a player from the Hypixel API using the `/player` endpoint.
+        Gets a player from the Hypixel API using the ``/player`` endpoint.
 
         :param uuid: The UUID you are requesting player data for.
         :type uuid: str_
@@ -191,7 +351,7 @@ API Reference
 
         |coro|
 
-        Gets a player's SkyBlock profiles from the Hypixel API using the `/skyblock/profiles` endpoint.
+        Gets a player's SkyBlock profiles from the Hypixel API using the ``/skyblock/profiles`` endpoint.
 
         :param uuid: The player's UUID.
         :type uuid: str_
@@ -207,7 +367,7 @@ API Reference
 
         |coro|
 
-        Gets information on an API Key.
+        Gets information on an API Key using the ``/key`` endpoint.
 
         :param key: The API key you want information for.
                     Defaults to the API key you provided on initialization of the class.
@@ -217,6 +377,23 @@ API Reference
 
         :return: The data on the API Key
         :rtype: :ref:`APIKey`<APIKey>`
+
+    .. py:method:: get_achievements()
+
+        .. versionadded:: 0.1.9
+
+        |coro|
+
+        Gets every achievement on the Hypixel Network using the ``/resources/achievements`` endpoint.
+
+        .. note::
+
+            This does not require an API Key.
+
+        :raises PyPixelError_: The request failed for some reason.
+
+        :return: An object containing every achievement.
+        :rtype: AchievementData_
 
     .. py:method:: get_name(uuid)
 
@@ -267,6 +444,9 @@ API Reference
             whether or not the data was retrieved from the cache.
         :rtype: dict_, bool_
 
+
+
+
 .. _APIKey:
 .. py:class:: APIKey(key_data, cached, hypixel):
 
@@ -316,6 +496,9 @@ API Reference
         :return: The key's owner.
         :rtype: Player_
 
+
+
+
 .. _Player:
 .. py:class:: Player(data, cached, hypixel)
 
@@ -330,6 +513,9 @@ API Reference
     :param hypixel: The Hypixel class used to make the request.
     :type hypixel: :ref:`Hypixel<Hypixel>`
 
+
+
+
 .. _PlayerStats:
 .. py:class:: PlayerStats(data)
 
@@ -342,173 +528,19 @@ API Reference
 
         The player's SkyWars statistics.
 
-.. _SkyBlockProfile:
-.. py:class:: SkyBlockProfile(profiledata, cached, hypixel)
 
-    Represents a SkyBlock profile.
 
-    :param profiledata: The profile's data from the API.
-    :type profiledata: dict_
 
-    :param cached: A boolean indicating if the profile's data was retrieved from the cache.
-    :type cached: bool_
+.. _Firework:
+.. py:class:: Firework(firework)
 
-    :param hypixel: The Hypixel class used to get the profile.
-    :type hypixel: Hypixel_
+    Represents a firework. Interesting, right?
 
-.. _ProfileMember:
-.. py:class:: Profilemember(uuid, memberdata, hypixel)
+    :param firework: The raw firework data.
+    :type firework: dict_
 
-    Represents a member in a SkyBlock profile.
 
-    :param uuid: The member's UUID.
-    :type uuid: str_
 
-    :param memberdata: The member's data in the profile.
-    :type memberdata: dict_
-
-    :param hypixel: The Hypixel class used to get the profile.
-    :type hypixel: Hypixel_
-
-    .. py:method:: get_player()
-
-        |coro|
-
-        Gets the member's player object.
-
-        :raises PlayerNotFound_: The player couldn't be found for some reason.
-
-        :return: The player from the API.
-        :rtype: Player_
-
-.. _SkyBlockStats:
-.. py:class:: SkyBlockStats(stats)
-
-    Represents a player's SkyBlock Statistics.
-
-    :param stats: The player's stats from their memberdata retrieved from the API.
-    :type stats: dict
-
-.. _SkyBlockObjective:
-.. py:class:: SkyBlockObjective(objective_name, objective_data)
-
-    Represents a SkyBlock Objective.
-
-    :param objective_name: The name of the objective.
-    :type objective_name: str_
-
-    :param objective_data: The objective's data.
-    :type objective_data: dict_
-
-    .. py:attribute:: name
-
-        The name of the objective.
-
-    .. py:attribute:: status
-
-        The objective's status.
-
-    .. py:attribute:: progress
-
-        The objective's progress.
-
-    .. py:attribute:: completed_at
-
-        The objective's completion date/time. Can also be ``None`` if not completed.
-
-.. _SkyBlockQuest:
-.. py:class:: SkyBlockQuest(quest_name, quest_data)
-
-    Represents a SkyBlock quest.
-
-    :param quest_name: The name of the quest.
-    :type quest_name: str_
-
-    :param quest_data: The quest's data.
-    :type quest_data: dict_
-
-    .. py:attribute:: name
-
-        The name of the quest.
-
-    .. py:attribute:: status
-
-        The quest's status.
-
-    .. py:attribute:: activated_at
-
-        The quest's activation date/time.
-
-    .. py:attribute:: completed_at
-
-        The quest's completion date/time. Can also be ``None`` if not completed.
-
-.. _SkyBlockSlayer:
-.. py:class:: SkyBlockSlayer(slayer, slayer_data)
-
-    Represents a SkyBlock slayer.
-
-    :param slayer: The name of the slayer.
-    :type slayer: str_
-
-    :param slayer_data: The slayer's data.
-    :type slayer_data: dict_
-
-    .. py:attribute:: slayer
-
-        The name of the slayer.
-
-    .. py:attribute:: claimed_levels
-
-        The player's claimed levels for a slayer.
-
-    .. py:attribute:: xp
-
-        The player's slayer xp.
-
-    .. py:attribute:: level
-
-        The player's slayer level.
-
-.. _SkyBlockPet:
-.. py:class:: SkyBlockPet(pet_data)
-
-    Represents a SkyBlock pet.
-
-    :param pet_data: The pet's data.
-    :type pet_data: dict_
-
-    .. py:attribute:: uuid
-
-        The pet's UUID, I guess.
-
-    .. py:attribute:: type
-
-        The pet's type.
-
-    .. py:attribute:: xp
-
-        The pet's XP.
-
-    .. py:attribute:: active
-
-        A boolean indicating whether or not the pet is active.
-
-    .. py:attribute:: tier
-
-        The pet's tier
-
-    .. py:attribute:: held_item
-
-        The item the pet is holding.
-
-    .. py:attribute:: candy_used
-
-        The candy used on the pet.
-
-    .. py:attribute:: skin
-
-        The pet's skin.
 
 .. _SkyWarsStats:
 .. py:class:: SkyWarsStats(playerstats)
@@ -601,6 +633,192 @@ API Reference
 
             :param stats: The raw SkyWars stats data from the API.
             :type stats: dict_
+
+
+
+
+.. _SkyBlockProfile:
+.. py:class:: SkyBlockProfile(profiledata, cached, hypixel)
+
+    Represents a SkyBlock profile.
+
+    :param profiledata: The profile's data from the API.
+    :type profiledata: dict_
+
+    :param cached: A boolean indicating if the profile's data was retrieved from the cache.
+    :type cached: bool_
+
+    :param hypixel: The Hypixel class used to get the profile.
+    :type hypixel: Hypixel_
+
+.. _ProfileMember:
+.. py:class:: Profilemember(uuid, memberdata, hypixel)
+
+    Represents a member in a SkyBlock profile.
+
+    :param uuid: The member's UUID.
+    :type uuid: str_
+
+    :param memberdata: The member's data in the profile.
+    :type memberdata: dict_
+
+    :param hypixel: The Hypixel class used to get the profile.
+    :type hypixel: Hypixel_
+
+    .. py:method:: get_player()
+
+        |coro|
+
+        Gets the member's player object.
+
+        :raises PlayerNotFound_: The player couldn't be found for some reason.
+
+        :return: The player from the API.
+        :rtype: Player_
+
+
+
+
+.. _SkyBlockStats:
+.. py:class:: SkyBlockStats(stats)
+
+    Represents a player's SkyBlock Statistics.
+
+    :param stats: The player's stats from their memberdata retrieved from the API.
+    :type stats: dict
+
+
+
+
+.. _SkyBlockObjective:
+.. py:class:: SkyBlockObjective(objective_name, objective_data)
+
+    Represents a SkyBlock Objective.
+
+    :param objective_name: The name of the objective.
+    :type objective_name: str_
+
+    :param objective_data: The objective's data.
+    :type objective_data: dict_
+
+    .. py:attribute:: name
+
+        The name of the objective.
+
+    .. py:attribute:: status
+
+        The objective's status.
+
+    .. py:attribute:: progress
+
+        The objective's progress.
+
+    .. py:attribute:: completed_at
+
+        The objective's completion date/time. Can also be ``None`` if not completed.
+
+
+
+
+.. _SkyBlockQuest:
+.. py:class:: SkyBlockQuest(quest_name, quest_data)
+
+    Represents a SkyBlock quest.
+
+    :param quest_name: The name of the quest.
+    :type quest_name: str_
+
+    :param quest_data: The quest's data.
+    :type quest_data: dict_
+
+    .. py:attribute:: name
+
+        The name of the quest.
+
+    .. py:attribute:: status
+
+        The quest's status.
+
+    .. py:attribute:: activated_at
+
+        The quest's activation date/time.
+
+    .. py:attribute:: completed_at
+
+        The quest's completion date/time. Can also be ``None`` if not completed.
+
+
+
+
+.. _SkyBlockSlayer:
+.. py:class:: SkyBlockSlayer(slayer, slayer_data)
+
+    Represents a SkyBlock slayer.
+
+    :param slayer: The name of the slayer.
+    :type slayer: str_
+
+    :param slayer_data: The slayer's data.
+    :type slayer_data: dict_
+
+    .. py:attribute:: slayer
+
+        The name of the slayer.
+
+    .. py:attribute:: claimed_levels
+
+        The player's claimed levels for a slayer.
+
+    .. py:attribute:: xp
+
+        The player's slayer xp.
+
+    .. py:attribute:: level
+
+        The player's slayer level.
+
+
+
+
+.. _SkyBlockPet:
+.. py:class:: SkyBlockPet(pet_data)
+
+    Represents a SkyBlock pet.
+
+    :param pet_data: The pet's data.
+    :type pet_data: dict_
+
+    .. py:attribute:: uuid
+
+        The pet's UUID, I guess.
+
+    .. py:attribute:: type
+
+        The pet's type.
+
+    .. py:attribute:: xp
+
+        The pet's XP.
+
+    .. py:attribute:: active
+
+        A boolean indicating whether or not the pet is active.
+
+    .. py:attribute:: tier
+
+        The pet's tier
+
+    .. py:attribute:: held_item
+
+        The item the pet is holding.
+
+    .. py:attribute:: candy_used
+
+        The candy used on the pet.
+
+    .. py:attribute:: skin
+
+        The pet's skin.
 
 
 Exceptions
