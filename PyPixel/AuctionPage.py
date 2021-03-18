@@ -43,5 +43,5 @@ class AuctionPage(object):
         self.page = data['page']
         self.total_pages = data['totalPages']
         self.total_auctions = data['totalAuctions']
-        self.last_updated = datetime.datetime.fromtimestamp(data['lastUpdated'])
+        self.last_updated = datetime.datetime.fromtimestamp(data['lastUpdated']/1000)
         self.auctions = [Auction(auction, cached, hypixel) for auction in data['auctions']]

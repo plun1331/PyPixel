@@ -45,8 +45,8 @@ class Auction(object):
         self.auctioneer = data['auctioneer']
         self.auctioneer_profile = data['profile_id']
         self.auctioneer_coop_members = data['coop']
-        self.started = datetime.datetime.fromtimestamp(data['start'])
-        self.end = datetime.datetime.fromtimestamp(data['end'])
+        self.started = datetime.datetime.fromtimestamp(data['start']/1000)
+        self.end = datetime.datetime.fromtimestamp(data['end']/1000)
         self.item = data['item_name']
         self.lore = data['item_lore']
         self.stripped_lore = HypixelUtils.stripFormatting(data['item_lore'])
