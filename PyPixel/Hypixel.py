@@ -204,7 +204,7 @@ class Hypixel:
 
         :return: The page of auctions.
         :rtype: PyPixel.AuctionPage.AuctionPage"""
-        url = '{0.base_url}skyblock/profiles?page={1}'.format(self, page)
+        url = '{0.base_url}skyblock/auctions?page={1}'.format(self, page)
         data, cached = await self._send(url, authenticate=False)
         if not data['success']:
             raise PyPixelError("Couldn't GET from {0}: {1}".format(url, data['cause']))
