@@ -3,7 +3,7 @@ Changelog
 
 0.2.0
 ******
-* Removed the ``validate`` kwarg in ``.Hypixel``.
+* Removed API Key validation.
 * Added support for the ``/skyblock/auctions`` endpoint.
 * Added ``stripFormatting(text)`` to ``HypixelUtils`` to strip Minecraft text formatting from strings.
 * The wrapper now sends an ``Api-Key`` header to authenticate with the API instead of the ``key`` path param.
