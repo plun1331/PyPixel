@@ -24,37 +24,29 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from threading import Thread
 import asyncio
+from time import time
 
 
-class Cache(Thread):
+class Cache(object):
     r"""A class used for caching data returned from the api
 
-    :param clear_cache_after: How often the cache should be cleared in seconds.
+    :param clear_cache_after: How long data should stay cached for.
     :type clear_cache_after: class:`int`
     """
+
     def __init__(self, clear_cache_after: int):
         super().__init__()
         self.cached = {}
         self.cachedelay = clear_cache_after
-        self.setDaemon(True)
-        self.start()
 
-    def run(self):
-        r"""Runs a loop that refreshes the cache every so often.
-
-        This is not meant to be called manually, and is invoked when the class is initialized."""
-        loop = asyncio.new_event_loop()
-        while True:
-            loop.run_until_complete(asyncio.sleep(self.cachedelay))
-            loop.run_until_complete(self.clearCache())
-
-    async def clearCache(self):
+    async def cleanCache(self):
         r"""|coro|
         
-        Clears the cache."""
-        self.cached = {}
+        Cleans the cache."""
+        for url, info in self.cached.items():
+            if info['timestamp'] + self.cachedelay < time():
+                del self.cached[url]
 
     async def getFromCache(self, url: str):
         r"""|coro|
@@ -63,8 +55,9 @@ class Cache(Thread):
 
         :return: The cached response. Can also be `None` if the response is not cached.
         :rtype: Optional[dict]"""
+        asyncio.create_task(self.cleanCache())
         if url in self.cached:
-            return self.cached[url]
+            return self.cached[url]['data']
         return None
 
     async def cache(self, url: str, data: dict):
@@ -77,4 +70,6 @@ class Cache(Thread):
 
         :param data: The response as a dict.
         :type data: dict"""
-        self.cached[url] = data
+        await asyncio.create_task(self.cleanCache())
+        self.cached[url] = {'data': data,
+                            'timestamp': time()}
