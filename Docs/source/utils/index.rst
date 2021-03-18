@@ -79,6 +79,9 @@ The following section outlines the API for PyPixel.utils.
         :param text: The text to strip.
         :type text: str_
 
+        :return: The stripped text.
+        :rtype: str_
+
 
 .. py:class:: SkyBlockUtils
 
