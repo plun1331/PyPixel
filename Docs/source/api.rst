@@ -262,7 +262,7 @@ The following section outlines the API for PyPixel.
 
         Gets the auctioneer's player object.
 
-        :raises PyPixel.Errors.PlayerNotFound: The player couldn't be found for some reason.
+        :raises PlayerNotFound_: The player couldn't be found for some reason.
 
         :return: The player from the API.
         :rtype: :ref:`Player<Player>`
