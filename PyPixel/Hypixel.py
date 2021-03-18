@@ -24,19 +24,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 import sys
-
-import aiohttp
-import asyncio
 from typing import List, Tuple, Literal, Optional
 
-from .AuctionPage import AuctionPage
-from .Player import Player
-from .Errors import PlayerNotFound, GuildNotFound, APIError, NotFound, ClientError, KeyNotFound, PyPixelError
-from .Cache import Cache
-from .Guild import Guild
-from .SkyBlockProfile import SkyBlockProfile
-from .Key import APIKey
+import aiohttp
+
 from .Achievements import AchievementData
+from .AuctionPage import AuctionPage
+from .Cache import Cache
+from .Errors import PlayerNotFound, GuildNotFound, APIError, NotFound, ClientError, KeyNotFound, PyPixelError
+from .Guild import Guild
+from .Key import APIKey
+from .Player import Player
+from .SkyBlockProfile import SkyBlockProfile
 
 
 class Hypixel:
@@ -61,11 +60,6 @@ class Hypixel:
         b = str(base_url) if str(base_url).endswith('/') else str(base_url) + '/'
         self.base_url: str = b if b.startswith('https://') or b.startswith('http://') else 'https://' + b
         self.cache = Cache(int(clear_cache_after))
-        try:
-            loop = asyncio.new_event_loop()
-            loop.run_until_complete(self.get_key())
-        except KeyNotFound:
-            raise ValueError("The API Key {0} is invalid.".format(self.api_key))
         self.session = aiohttp.ClientSession()
         if user_agent is None:
             user_agent = 'PyPixel (https://github.com/plun1331/PyPixel) Python/{0[0]}.{0[1]}.{0[2]} aiohttp/{1}'
