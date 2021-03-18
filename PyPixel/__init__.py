@@ -15,7 +15,7 @@ __title__ = 'PyPixel'
 __author__ = 'plun1331'
 __license__ = 'MIT'
 __copyright__ = 'Copyright 2021 plun1331'
-__version__ = '0.1.9'
+__version__ = '0.2.0'
 
 __path__ = __import__('pkgutil').extend_path(__path__, __name__)
 
@@ -34,6 +34,8 @@ from .SkyBlockProfile import SkyBlockProfile
 from .SkyBlockProfileMember import SkyBlockStats, SkyBlockObjective, SkyBlockQuest, SkyBlockSlayer, SkyBlockPet, \
     ProfileMember
 from .Achievements import AchievementData, AchievementTier, Achievement, AchievementGame, Tiered, OneTime
+from .AuctionPage import AuctionPage
+from .Auction import Auction
 
 VersionInfo = namedtuple('VersionInfo', 'major minor micro releaselevel serial')
 
