@@ -134,6 +134,7 @@ The following section outlines the API for PyPixel.
 
 
 .. _AchievementTier:
+.. py:class:: AchievementTier(data)
 
     .. versionadded:: 0.1.9
 
@@ -155,28 +156,172 @@ The following section outlines the API for PyPixel.
         The amount of ``x`` you have to get for this tier.
 
 
+.. _Auction:
+.. py:class:: Auction(data, cached, hypixel)
 
+    .. versionadded:: 0.2.0
+
+    Represents an auction on the Skyblock Auction House.
+
+    :param data: The auction's data from the API.
+    :type data: dict_
+
+    :param cached: Whether or not the data was retrieved from the cache.
+    :type cached: bool_
+
+    :param hypixel: The Hypixel class used to make the request.
+    :type hypixel: Hypixel_
+
+    .. py:attribute:: raw
+
+        The auction's raw data from the API.
+
+    .. py:attribute:: cached
+
+        Whether or not the data is from the cache.
+
+    .. py:attribute:: id
+
+        The auction's ID.
+
+    .. py:attribute:: auctioneer
+
+        The auctioneer's UUID.
+
+    .. py:attribute:: auctioneer_profile
+
+        The auctioneer's SkyBlock profile ID.
+
+    .. py:attribute:: auctioneer_coop_members
+
+        The members of the auctioneer's coop.
+
+    .. py:attribute:: started
+
+        The date and time that the auction started.
+
+    .. py:attribute:: end
+
+        The date and time that the auction ends at.
+
+    .. py:attribute:: item
+
+        The name of the item being auctioned.
+
+    .. py:attribute:: lore
+
+        The lore of the item being auctioned.
+
+    .. py:attribute:: stripped_lore
+
+        The item's lore, but stripped of formatting.
+
+    .. py:attribute:: extra
+
+        Some extra data on the item being auctioned.
+
+    .. py:attribute:: category
+
+        The category the item is in.
+
+    .. py:attribute:: tier
+
+        The item's tier.
+
+    .. py:attribute:: starting_bid
+
+        The starting bid for the auction. If the auction is a BIN auction, this is the price of the item.
+
+    .. py:attribute:: nbt_data
+
+        The NBT data for the item.
+
+    .. py:attribute:: claimed
+
+        Whether or not the auction has been claimed.
+
+    .. py:attribute:: claimed_bidders
+
+        The bidders that have claimed their coins/items from the auction.
+
+    .. py:attribute:: highest_bid
+
+        The highest bid on the item. If nobody has bid, this will be 0. For BIN auctions, this will always be 0.
+
+    .. py:attribute:: bin
+
+        Whether or not the auction is a BIN auction.
+
+    .. py:attribute:: bids
+
+        A list of bids on the item. For BIN auctions, this will always be an empty list.
+
+    .. py:method:: get_auctioneer()
+
+        |coro|
+
+        Gets the auctioneer's player object.
+
+        :raises PyPixel.Errors.PlayerNotFound: The player couldn't be found for some reason.
+
+        :return: The player from the API.
+        :rtype: :ref:`Player<Player>`
+
+.. _AuctionPage:
+.. py:class:: AuctionPage(data, cached, hypixel)
+
+    .. versionadded:: 0.2.0
+
+    Represents a page of Skyblock auctions from the Hypixel API.
+
+    :param data: The raw data from the API.
+    :type data: dict_
+
+    :param cached: Whether or not the data was retrieved from the cache.
+    :type cached: bool_
+
+    :param hypixel: The Hypixel class used to make the request.
+    :type hypixel: Hypixel_
+
+    .. py:attribute:: raw
+
+        The raw data from the API.
+
+    .. py:attribute:: page
+
+        The page number.
+
+    .. py:attribute:: total_pages
+
+        The total number of pages.
+
+    .. py:attribute:: total_auctions
+
+        The total number of auctions.
+
+    .. py:attribute:: last_updated
+
+        The date and time that the page was last updated.
+
+    .. py:attribute:: auctions
+
+        A list of Auction_.
 
 .. _Cache:
 .. py:class:: Cache(clear_cache_after)
 
+    .. versionchanged:: 0.2.0
+
     A class used for caching data returned from the api
 
-    :param clear_cache_after: How often the cache should be cleared in seconds.
-    :type clear_cache_after: class:`int`
+    :param clear_cache_after: How long data should stay cached for.
+    :type clear_cache_after: int_
 
-    .. py:method:: run()
-
-        Runs a loop that refreshes the cache every so often.
-
-        .. warning::
-            This is not meant to be called manually, and is invoked when the class is initialized.
-
-    .. py:method:: clearCache()
+    .. py:method:: cleanCache()
 
         |coro|
 
-        Clears the cache.
+        Cleans the cache.
 
     .. py:method:: getFromCache(url)
 
@@ -294,13 +439,17 @@ The following section outlines the API for PyPixel.
 
 
 .. _Hypixel:
-.. py:class:: Hypixel(*, api_key, base_url = "https://api.hypixel.net, clear_cache_after = 300, validate=False)
+.. py:class:: Hypixel(*, api_key, base_url, clear_cache_after, user_agent)
 
     The main class that will be used for requesting information from the Hypixel API.
 
-    .. versionchanged:: 0.1.9
+    .. versionchanged:: 0.2.0
 
-        Added a kwarg that allows you to bypass the validation of your API Key.
+        Removed the ``validate`` kwarg and added a ``user_agent`` kwarg.
+
+        Added the ``get_auctions`` method.
+
+        Updated ``_send``.
 
 
     :param api_key: Your Hypixel API key.
@@ -312,8 +461,9 @@ The following section outlines the API for PyPixel.
     :param clear_cache_after: How often the cache should clear in seconds.
     :type clear_cache_after: Optional[int_]
 
-    :param validate: Whether or not to validate the provided API Key. Defaults to ``True``.
-    :type validate: bool_
+    :param user_agent: The user agent to use for requests.
+                        This is formatted with your Python version and aiohttp version.
+    :type user_agent: Optional[str_]
 
     .. py:method:: get_player(uuid)
 
@@ -361,6 +511,24 @@ The following section outlines the API for PyPixel.
         :return: A list containing the player's profiles.
         :rtype: List[:ref:`SkyBlockProfile<SkyBlockProfile>`]
 
+    .. py:method:: get_auctions(page)
+
+        |coro|
+
+        .. versionadded:: 0.2.0
+
+        Gets a page of auctions from the Hypixel API.
+
+         .. note::
+
+            This does not use your API Key.
+
+        :param page: The page to request.
+        :type page: int_
+
+        :return: The page of auctions.
+        :rtype: :ref:`AuctionPage<AuctionPage>`
+
     .. py:method:: get_key(key=None)
 
         .. versionadded:: 0.1.8
@@ -388,7 +556,7 @@ The following section outlines the API for PyPixel.
 
         .. note::
 
-            This does not require an API Key.
+            This does not use your API Key.
 
         :raises PyPixelError_: The request failed for some reason.
 
@@ -423,18 +591,28 @@ The following section outlines the API for PyPixel.
         :return: The player's UUID.
         :rtype: str_
 
-    .. py:method:: _send(url)
+    .. py:method:: _send(url, *, headers, authenticate)
 
         |coro|
 
-        .. versionchanged:: 0.1.8
+        .. versionchanged:: 0.2.0
 
-            This will now raise exceptions when a http error code is returned by the API.
+            Added a ``header`` kwarg, as well as the ``authenticate`` kwarg.
+
+            This will also add the ``User-Agent`` header to requests.
 
         Sends a request to the specified url.
 
         :param url: The URL the request will be sent to.
         :type url: str_
+
+        :param headers: The request headers. Defaults to an empty dict.
+        :type headers: Optional[dict_]
+
+        :param authenticate: Whether or not to provide an ``Api-Key`` header with your API Key.
+                            If not provided, will provide the ``Api-Key`` header based on the url the
+                            request is being sent to.
+        :type authenticate: Optional[bool_]
 
         :raises APIError_: The API returned a ``500`` range status code.
         :raises NotFound_: The API returned a ``404`` status code.

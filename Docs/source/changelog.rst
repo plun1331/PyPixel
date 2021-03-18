@@ -1,6 +1,15 @@
 Changelog
 ==========
 
+0.2.0
+******
+* Removed the ``validate`` kwarg in ``.Hypixel``.
+* Added support for the ``/skyblock/auctions`` endpoint.
+* Added ``stripFormatting(text)`` to ``HypixelUtils`` to strip Minecraft text formatting from strings.
+* The wrapper now sends an ``Api-Key`` header to authenticate with the API instead of the ``key`` path param.
+* The wrapper will also send a ``User-Agent`` header to the APIs that it uses.
+* The cache no longer uses Threading.
+
 0.1.9
 ******
 * Added support for the ``/resources/achievements`` endpoint.

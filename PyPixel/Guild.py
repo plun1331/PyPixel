@@ -66,6 +66,15 @@ class Guild(object):
         self.xp = guilddata['exp'] if 'exp' in guilddata else None
         self.guild_xp_by_game = guilddata['guildExpByGameType'] if 'guildExpByGameType' in guilddata else None
 
+    def __eq__(self, other):
+        if isinstance(other, type(self)):
+            try:
+                if other.id == self.id:
+                    return
+            except AttributeError:
+                pass
+        return False
+
     def __str__(self):
         return self.name
 

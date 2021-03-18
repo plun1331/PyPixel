@@ -28,6 +28,16 @@ from .Auction import Auction
 
 
 class AuctionPage(object):
+    r"""Represents a page of Skyblock auctions from the Hypixel API.
+
+    :param data: The raw data from the API.
+    :type data: dict
+
+    :param cached: Whether or not the data was retrieved from the cache.
+    :type cached: bool
+
+    :param hypixel: The Hypixel class used to make the request.
+    :type hypixel: PyPixel.Hypixel.Hypixel"""
     def __init__(self, data: dict, cached: bool, hypixel):
         self.raw = data
         self.page = data['page']

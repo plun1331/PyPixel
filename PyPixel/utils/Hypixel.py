@@ -184,4 +184,8 @@ class HypixelUtils:
 
     @staticmethod
     def stripFormatting(text: str) -> str:
+        r"""Strips Minecraft text formatting (``§1``) from text using Regex.
+
+        :param text: The text to strip.
+        :type text: str"""
         return mcformat.sub('', text)

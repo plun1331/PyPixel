@@ -27,7 +27,18 @@ from .utils import HypixelUtils
 
 
 class Auction(object):
+    r"""Represents an auction on the Skyblock Auction House.
+
+    :param data: The auction's data from the API.
+    :type data: dict
+
+    :param cached: Whether or not the data was retrieved from the cache.
+    :type cached: bool
+
+    :param hypixel: The Hypixel class used to make the request.
+    :type hypixel: PyPixel.Hypixel.Hypixel"""
     def __init__(self, data: dict, cached: bool, hypixel):
+        self.raw = data
         self.cached = cached
         self._hypixel = hypixel
         self.id = data['uuid']
@@ -50,5 +61,25 @@ class Auction(object):
         self.bin = data.get('bin', False)
         self.bids = data['bids']
 
+    def __eq__(self, other):
+        if isinstance(other, type(self)):
+            try:
+                if other.id == self.id:
+                    return
+            except AttributeError:
+                pass
+        return False
+
+    def __str__(self):
+        return self.item
+
     async def get_auctioneer(self):
+        r"""|coro|
+
+        Gets the auctioneer's player object.
+
+        :raises PyPixel.Errors.PlayerNotFound: The player couldn't be found for some reason.
+
+        :return: The player from the API.
+        :rtype: PyPixel.Player.Player"""
         return await self._hypixel.get_player(self.auctioneer)

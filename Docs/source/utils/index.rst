@@ -70,6 +70,15 @@ The following section outlines the API for PyPixel.utils.
         :return: The game's name, or if the game is not found, the original value you provided.
         :rtype: str_
 
+    .. py:staticmethod:: stripFormatting(text)
+
+        .. versionadded:: 0.2.0
+
+        Strips Minecraft text formatting (``§1``) from text using Regex.
+
+        :param text: The text to strip.
+        :type text: str_
+
 
 .. py:class:: SkyBlockUtils
 

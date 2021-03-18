@@ -197,14 +197,26 @@ class Hypixel:
             profiles.append(SkyBlockProfile(profile, cached, self))
         return profiles
 
-    async def get_auctions(self, page: int = 0):
+    async def get_auctions(self, page: int = 0) -> AuctionPage:
+        r"""
+        |coro|
+
+        Gets a page of auctions from the Hypixel API.
+
+        This does not use your API Key.
+
+        :param page: The page to request.
+        :type page: int_
+
+        :return: The page of auctions.
+        :rtype: PyPixel.AuctionPage.AuctionPage"""
         url = '{0.base_url}skyblock/profiles?page={1}'.format(self, page)
         data, cached = await self._send(url, authenticate=False)
         if not data['success']:
             raise PyPixelError("Couldn't GET from {0}: {1}".format(url, data['cause']))
         return AuctionPage(data, cached, self)
 
-    async def get_key(self, key=None):
+    async def get_key(self, key=None) -> APIKey:
         """|coro|
 
         Gets information on an API Key.
@@ -241,12 +253,12 @@ class Hypixel:
             self
         )
 
-    async def get_achievements(self):
+    async def get_achievements(self) -> AchievementData:
         r"""|coro|
 
         Gets every achievement on the Hypixel Network using the ``/resources/achievements`` endpoint.
 
-        This does not require an API Key.
+        This does not use your API Key.
 
         :raises PyPixel.Errors.PyPixelError: The request failed for some reason.
 
