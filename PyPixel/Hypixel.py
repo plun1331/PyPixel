@@ -23,10 +23,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
+import sys
 
 import aiohttp
 import asyncio
-from typing import List, Tuple, Literal
+from typing import List, Tuple, Literal, Optional
+
+from .AuctionPage import AuctionPage
 from .Player import Player
 from .Errors import PlayerNotFound, GuildNotFound, APIError, NotFound, ClientError, KeyNotFound, PyPixelError
 from .Cache import Cache
@@ -48,21 +51,25 @@ class Hypixel:
     :param clear_cache_after: How often the cache should clear in seconds.
     :type clear_cache_after: Optional[int]
 
-    :param validate: Whether or not to validate the provided API Key. Defaults to ``True``.
-    :type validate: bool"""
+    :param user_agent: The user agent to use for requests.
+                        This is formatted with your Python version and aiohttp version.
+    :type user_agent: Optional[str]"""
 
     def __init__(self, *, api_key: str, base_url: str = "https://api.hypixel.net/", clear_cache_after: int = 300,
-                 validate: bool=True):
+                 user_agent: str = None):
         self.api_key = str(api_key)
         b = str(base_url) if str(base_url).endswith('/') else str(base_url) + '/'
-        self.base_url = b if b.startswith('https://') or b.startswith('http://') else 'https://' + b
+        self.base_url: str = b if b.startswith('https://') or b.startswith('http://') else 'https://' + b
         self.cache = Cache(int(clear_cache_after))
-        if validate:
-            try:
-                loop = asyncio.new_event_loop()
-                loop.run_until_complete(self.get_key())
-            except KeyNotFound:
-                raise ValueError("The API Key {0} is invalid.".format(self.api_key))
+        try:
+            loop = asyncio.new_event_loop()
+            loop.run_until_complete(self.get_key())
+        except KeyNotFound:
+            raise ValueError("The API Key {0} is invalid.".format(self.api_key))
+        self.session = aiohttp.ClientSession()
+        if user_agent is None:
+            user_agent = 'PyPixel (https://github.com/plun1331/PyPixel) Python/{0[0]}.{0[1]}.{0[2]} aiohttp/{1}'
+        self.user_agent: str = user_agent.format(sys.version_info, aiohttp.__version__)
 
     async def get_player(self, uuid: str) -> Player:
         r"""|coro|
@@ -77,7 +84,7 @@ class Hypixel:
         :return: The player from the API.
         :rtype: PyPixel.Player.Player"""
 
-        url = '{0.base_url}player?key={0.api_key}&uuid={1}'.format(self, uuid)
+        url = '{0.base_url}player?uuid={1}'.format(self, uuid)
         try:
             data, cached = await self._send(url)
         except NotFound as e:
@@ -115,7 +122,7 @@ class Hypixel:
         :return: The guild from the API.
         :rtype: PyPixel.Guild.Guild"""
 
-        url = '{0.base_url}guild?key={0.api_key}&'.format(self)
+        url = '{0.base_url}guild?'.format(self)
         if by.lower() == 'id':
             url += 'id={0}'.format(arg)
         elif by.lower() == 'name':
@@ -167,7 +174,7 @@ class Hypixel:
         :return: A list containing the player's profiles.
         :rtype: List[PyPixel.SkyBlockProfile.SkyBlockProfile]"""
 
-        url = '{0.base_url}skyblock/profiles?key={0.api_key}&uuid={1}'.format(self, uuid)
+        url = '{0.base_url}skyblock/profiles?&uuid={1}'.format(self, uuid)
         try:
             data, cached = await self._send(url)
         except NotFound as e:
@@ -190,6 +197,13 @@ class Hypixel:
             profiles.append(SkyBlockProfile(profile, cached, self))
         return profiles
 
+    async def get_auctions(self, page: int = 0):
+        url = '{0.base_url}skyblock/profiles?page={1}'.format(self, page)
+        data, cached = await self._send(url, authenticate=False)
+        if not data['success']:
+            raise PyPixelError("Couldn't GET from {0}: {1}".format(url, data['cause']))
+        return AuctionPage(data, cached, self)
+
     async def get_key(self, key=None):
         """|coro|
 
@@ -205,7 +219,7 @@ class Hypixel:
             key = self.api_key
         url = "{0.base_url}key?key={1}".format(self, key)
         try:
-            data, cached = await self._send(url)
+            data, cached = await self._send(url, authenticate=False)
         except NotFound as e:
             reason = e.data['cause'] if e.data is not None else "None"
             raise KeyNotFound(
@@ -240,7 +254,7 @@ class Hypixel:
         :rtype: PyPixel.Achievements.AchievementData"""
 
         url = "{0}resources/achievements".format(self.base_url)
-        data, cached = await self._send(url)
+        data, cached = await self._send(url, authenticate=False)
         if not data['success']:
             raise PyPixelError("Couldn't GET from {0}: {1}".format(url, data['cause']))
         return AchievementData(data, cached)
@@ -306,7 +320,7 @@ class Hypixel:
                 data
             )
 
-    async def _send(self, url: str) -> Tuple[dict, bool]:
+    async def _send(self, url: str, *, headers=None, authenticate: Optional[bool] = None) -> Tuple[dict, bool]:
         r"""|coro|
 
         Sends a request to the specified url.
@@ -314,38 +328,53 @@ class Hypixel:
         :param url: The URL the request will be sent to.
         :type url: str
 
+        :param headers: The request headers. Defaults to an empty dict.
+        :type headers: Optional[dict]
+
+        :param authenticate: Whether or not to provide an Api-Key header with your API Key.
+                            If not provided, will provide the Api-Key header based on the url the
+                            request is being sent to.
+        :type authenticate: Optional[bool]
+
         :return: The json data from the API, and a boolean value indicating
             whether or not the data was retrieved from the cache.
         :rtype: Tuple[dict, bool]"""
 
+        if headers is None:
+            headers = dict()
         data = await self.cache.getFromCache(url)
         cached = True
         if data is None:
-            async with aiohttp.ClientSession() as session:
-                async with session.get(url) as response:
-                    try:
-                        data = await response.json()
-                    except aiohttp.ClientError:
-                        data = None
-                    if 500 <= response.status < 600:
-                        raise APIError(
-                            response.status,
-                            "None",
-                            url,
-                            data
-                        )
-                    if response.status == 404:
-                        raise NotFound(
-                            "None",
-                            url,
-                            data
-                        )
-                    if 400 <= response.status < 500:
-                        raise ClientError(
-                            response.status,
-                            "None",
-                            url,
-                            data
-                        )
+            headers['User-Agent'] = self.user_agent
+            if authenticate is None:
+                if url.startswith(self.base_url):
+                    headers['Api-Key'] = self.api_key
+            elif authenticate:
+                headers['Api-Key'] = self.api_key
+            async with self.session.get(url, headers=headers) as response:
+                try:
+                    data = await response.json()
+                except aiohttp.ClientError:
+                    data = None
+                if 500 <= response.status < 600:
+                    raise APIError(
+                        response.status,
+                        "None",
+                        url,
+                        data
+                    )
+                if response.status == 404:
+                    raise NotFound(
+                        "None",
+                        url,
+                        data
+                    )
+                if 400 <= response.status < 500:
+                    raise ClientError(
+                        response.status,
+                        "None",
+                        url,
+                        data
+                    )
             cached = False
         return data, cached

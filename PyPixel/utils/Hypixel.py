@@ -29,7 +29,9 @@ import io
 import base64
 from typing import Union, Literal
 from .games import GameInfo
+import re
 
+mcformat = re.compile(r'§.')
 
 class HypixelUtils:
     r"""General utilities relating to Hypixel."""
@@ -124,7 +126,7 @@ class HypixelUtils:
         return 0
 
     @staticmethod
-    def playerLevel(xp) -> int:
+    def playerLevel(xp: float) -> int:
         r"""Gets a player's network level from their network experience,
         using the equation ``(((2 * xp) + 30625) ^ (1 / 2) / 50) - 2.5``.
 
@@ -160,7 +162,7 @@ class HypixelUtils:
         return level
 
     @staticmethod
-    def getGameName(game: Union[int, str]):
+    def getGameName(game: Union[int, str]) -> str:
         r"""Gets the name of a Hypixel gamemode from its ID or it's name in the API.
 
         :param game: The game's ID/API Name.
@@ -179,3 +181,7 @@ class HypixelUtils:
             if game.lower() in GameInfo.databasenames:
                 return GameInfo.databasenames[game.lower()]
         return game
+
+    @staticmethod
+    def stripFormatting(text: str) -> str:
+        return mcformat.sub('', text)
