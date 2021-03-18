@@ -35,7 +35,7 @@ The following section outlines the API for PyPixel.
 
 
 .. _AchievementGame:
-.. py:class:: AchievementGame(name, data):
+.. py:class:: AchievementGame(name, data)
 
     .. versionadded:: 0.1.9
 
