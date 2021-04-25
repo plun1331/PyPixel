@@ -155,10 +155,9 @@ class HypixelUtils:
         if xp >= 15000:
             level = (xp - 15000) / 10000. + 12
         else:
-            for i, item in enumerate(xps):
-                if xp < item:
-                    # noinspection PyTypeChecker
-                    level = int(round(int(1 + i + float(xp - xps[i - 1]) / (item - xps[i - 1], 0))))
+            for i in range(len(xps)):
+                if xp < xps[i]:
+                    return 1 + i + float(xp - xps[i-1]) / (xps[i] - xps[i-1])
         return level
 
     @staticmethod
