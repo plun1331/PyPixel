@@ -64,7 +64,7 @@ class HypixelUtils:
         if "rank" in data and data["rank"] != "NORMAL":
             rank = data["rank"]
         elif "monthlyPackageRank" in data:
-            if data['player']['monthlyPackageRank'] == "SUPERSTAR":
+            if data['monthlyPackageRank'] == "SUPERSTAR":
                 rank = "MVP++"
             else:
                 rank = "Default"
