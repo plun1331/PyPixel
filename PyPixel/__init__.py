@@ -15,7 +15,7 @@ __title__ = 'PyPixel'
 __author__ = 'plun1331'
 __license__ = 'MIT'
 __copyright__ = 'Copyright 2021 plun1331'
-__version__ = '0.2.0'
+__version__ = '0.2.1'
 
 __path__ = __import__('pkgutil').extend_path(__path__, __name__)
 
