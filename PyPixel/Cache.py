@@ -44,9 +44,9 @@ class Cache(object):
         r"""|coro|
         
         Cleans the cache."""
-        for url, info in self.cached.items():
+        for url, info in dict(self.cached).items():
             if info['timestamp'] + self.cachedelay < time():
-                del self.cached[url]
+                self.cached.pop(url)
 
     async def getFromCache(self, url: str):
         r"""|coro|
