@@ -11,6 +11,7 @@ https://pypixel.readthedocs.io/en/latest/)
 
 An asynchronous Python wrapper for the Hypixel API.
 
+hopefully i rewrite this soon
 
 
 # Installation
